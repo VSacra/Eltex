@@ -1,0 +1,92 @@
+touch {$USER}_part.log
+eltex-pg2-v17@eltex-2025-autumn:~$ screen -S 'whoami'_part2
+eltex-pg2-v17@eltex-2025-autumn:~$ ls
+ls           lsb_release  lsinitramfs  lslocks      lsmod        lspci
+lsattr       lscpu        lsipc        lslogins     lsns         lsusb
+lsblk        lsfd         lsirq        lsmem        lsof
+eltex-pg2-v17@eltex-2025-autumn:~$ $HIST
+$HISTCMD         $HISTFILE        $HISTSIZE
+$HISTCONTROL     $HISTFILESIZE    $HISTTIMEFORMAT
+eltex-pg2-v17@eltex-2025-autumn:~$ echo $HISTFILESIZE
+2000
+eltex-pg2-v17@eltex-2025-autumn:~$ ls -d ~/.*
+/home/eltex-pg2-v17/.bash_history
+/home/eltex-pg2-v17/.bash_logout
+/home/eltex-pg2-v17/.bashrc
+/home/eltex-pg2-v17/.{eltex-pg2-v17}_part.log.swp
+/home/eltex-pg2-v17/.lesshst
+/home/eltex-pg2-v17/.local
+/home/eltex-pg2-v17/.profile
+/home/eltex-pg2-v17/.report_part1.txt.swp
+/home/eltex-pg2-v17/.screenrc
+/home/eltex-pg2-v17/.ssh
+/home/eltex-pg2-v17/.viminfo
+nano ~/.bashrc
+export HISTTIMEFORMAT=" %F %T "
+eltex-pg2-v17@eltex-2025-autumn:~$ source ~/.bashrc
+eltex-pg2-v17@eltex-2025-autumn:~$ date
+Fri Oct 17 08:49:04 PM +07 2025
+history
+  284   2025-10-17 20:40:01 screen -ls
+  285   2025-10-17 20:40:54 echo $HISTFILESIZE
+  286   2025-10-17 20:41:32 ls -d ~/.*
+  287   2025-10-17 20:43:50 nano ~/.bashrc
+  288   2025-10-17 20:46:29 source ~/.bashrc
+  289   2025-10-17 20:49:04 date
+  290   2025-10-17 20:50:30 history
+cat .bach_history
+cat "{$USER}_part".log
+ls "{$USER}_part".log
+eltex-pg2-v17@eltex-2025-autumn:~$ PROMPT_COMMAND='history -a'
+unset PROMPT_COMMAND
+#1760709215
+echo $PROMPT_COMMAND
+#1760709238
+date
+#1760709315
+cat .bash_history
+#1760709499
+PROMPT_COMMAND = 'history -a'
+#1760709624
+PROMPT_COMMAND='history -a'
+eltex-pg2-v17@eltex-2025-autumn:~$ DATE=$(date +%Y-%m-%d)
+eltex-pg2-v17@eltex-2025-autumn:~$ echo $DATE
+2025-10-20
+eltex-pg2-v17@eltex-2025-autumn:~$ TIME=$(date +%H:%M:%S)
+eltex-pg2-v17@eltex-2025-autumn:~$ echo $TIME
+16:50:21
+eltex-pg2-v17@eltex-2025-autumn:~$ DATE_TIME="$DATE $TIME"
+eltex-pg2-v17@eltex-2025-autumn:~$ echo $DATE_TIME
+2025-10-20 16:50:21
+eltex-pg2-v17@eltex-2025-autumn:~$ echo /{s,}bin/*[0-9]
+/sbin/fsck.ext2 /sbin/fsck.ext3 /sbin/fsck.ext4 /sbin/killall5 /sbin/mkfs.ext2 /sbin/mkfs.ext3 /sbin/mkfs.ext4 /sbin/update-grub2 /bin/base32 /bin/base64 /bin/bunzip2 /bin/bzip2 /bin/c89 /bin/c99 /bin/cpp-12 /bin/diff3 /bin/gcc-12 /bin/gcc-ar-12 /bin/gcc-nm-12 /bin/gcc-ranlib-12 /bin/gcov-12 /bin/gcov-dump-12 /bin/gcov-tool-12 /bin/grub-mkpasswd-pbkdf2 /bin/i386 /bin/linux32 /bin/linux64 /bin/lto-dump-12 /bin/pdb3 /bin/pdb3.11 /bin/perl5.36.0 /bin/ping4 /bin/ping6 /bin/pydoc3.11 /bin/pygettext3 /bin/pygettext3.11 /bin/python3 /bin/python3.11 /bin/ssh-argv0 /bin/systemd-id128 /bin/traceroute6 /bin/x86_64 /bin/x86_64-linux-gnu-cpp-12 /bin/x86_64-linux-gnu-gcc-12 /bin/x86_64-linux-gnu-gcc-ar-12 /bin/x86_64-linux-gnu-gcc-nm-12 /bin/x86_64-linux-gnu-gcc-ranlib-12 /bin/x86_64-linux-gnu-gcov-12 /bin/x86_64-linux-gnu-gcov-dump-12 /bin/x86_64-linux-gnu-gcov-tool-12 /bin/x86_64-linux-gnu-lto-dump-12
+PS1='\u@\h-$(date "+%H:%M")'
+eltex-pg2-v17@eltex-2025-autumn-16:58
+eltex-pg2-v17@eltex-2025-autumn-16:58nano ~\.bashrc
+  GNU nano 7.2                        ~.bashrc
+PS1="\u@\h"-$(date +%H:%M)> ’
+export HISTTIMEFORMAT=" %F %T "
+eltex-pg2-v17@eltex-2025-autumn-17:06source ~\.bashrc
+eltex-pg2-v17@eltex-2025-autumn-17:07
+eltex-pg2-v17@eltex-2025-autumn-17:07mkdir $(date +%Y)-0{1..9} $(date +%Y)-1{0..            2}
+eltex-pg2-v17@eltex-2025-autumn-17:07ls
+ ’         2025-04   2025-08   2025-12                    practice2_pg2-v17_part1.log
+ 2025-01   2025-05   2025-09  '~.bashrc'                  {USER}_part.log
+ 2025-02   2025-06   2025-10   {eltex-pg2-v17}_part.log
+ 2025-03   2025-07   2025-11   home
+ /bin/pydoc3.11 /bin/pygettext3 /bin/pygettext3.11 /bin/python3 /bin/python3.11 /bin/ssh-argv0 /bin/systemd-id128 /bin/traceroute6 /bin/x86_64 /bin/x86_64-linux-gnu-cpp-12 /bin/x86_64-linux-gnu-gcc-12 /bin/x86_64-linux-gnu-gcc-ar-12 /bin/x86_64-linux-gnu-gcc-nm-12 /bin/x86_64-linux-gnu-gcc-ranlib-12 /bin/x86_64-linux-gnu-gcov-12 /bin/x86_64-linux-gnu-gcov-dump-12 /bin/x86_64-linux-gnu-gcov-tool-12 /bin/x86_64-linux-gnu-lto-dump-12
+PS1='\u@\h-$(date "+%H:%M")'
+eltex-pg2-v17@eltex-2025-autumn-16:58
+eltex-pg2-v17@eltex-2025-autumn-16:58nano ~\.bashrc
+  GNU nano 7.2                        ~.bashrc
+PS1="\u@\h"-$(date +%H:%M)> ’
+export HISTTIMEFORMAT=" %F %T "
+eltex-pg2-v17@eltex-2025-autumn-17:06source ~\.bashrc
+eltex-pg2-v17@eltex-2025-autumn-17:07
+eltex-pg2-v17@eltex-2025-autumn-17:07mkdir $(date +%Y)-0{1..9} $(date +%Y)-1{0..            2}
+eltex-pg2-v17@eltex-2025-autumn-17:07ls
+ ’         2025-04   2025-08   2025-12                    practice2_pg2-v17_part1.log
+ 2025-01   2025-05   2025-09  '~.bashrc'                  {USER}_part.log
+ 2025-02   2025-06   2025-10   {eltex-pg2-v17}_part.log
+ 2025-03   2025-07   2025-11   home
+

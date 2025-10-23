@@ -1,0 +1,47 @@
+touch {eltex-pg2-v17}_part3.log
+mkdir -p D1/D2/D3
+touch D1/D2/file.txt
+echo koza v tazike>>D1/D2/file.txt
+ln D1/D2/file.txt D1/D2/D3/hardlink.txt
+ln -s D1/D2/file.txt D1/D2/D3/softlink.txt
+ls -ali D1/D2/D3
+total 12
+393298 drwxr-xr-x 2 eltex-pg2-v17 eltex-pg2-v17 4096 Oct 20 17:24 .
+393297 drwxr-xr-x 3 eltex-pg2-v17 eltex-pg2-v17 4096 Oct 20 17:22 ..
+393299 -rw-r--r-- 2 eltex-pg2-v17 eltex-pg2-v17   14 Oct 20 17:23 hardlink.txt
+393300 lrwxrwxrwx 1 eltex-pg2-v17 eltex-pg2-v17   14 Oct 20 17:24 softlink.txt -> D1/D2/file.txt
+ls -ali D1/D2
+total 16
+393297 drwxr-xr-x 3 eltex-pg2-v17 eltex-pg2-v17 4096 Oct 20 17:22 .
+393296 drwxr-xr-x 3 eltex-pg2-v17 eltex-pg2-v17 4096 Oct 20 17:20 ..
+393298 drwxr-xr-x 2 eltex-pg2-v17 eltex-pg2-v17 4096 Oct 20 17:24 D3
+393299 -rw-r--r-- 2 eltex-pg2-v17 eltex-pg2-v17   14 Oct 20 17:23 file.txt
+mv D1/D2/file.txt D1
+cat D1/D2/D3/hardlink.txt
+koza v tazike
+cat D1/D2/D3/softlink.txt
+cat: D1/D2/D3/softlink.txt: No such file or directory
+rm -r D1/D2
+touch {eltex-pg2-v17}_part3_gt20M.log
+find / -size +20M
+ls -lh /boot/
+total 122M
+-rw-r--r-- 1 root root 254K Feb  7  2025 config-6.1.0-31-amd64
+-rw-r--r-- 1 root root 254K Mar  6  2025 config-6.1.0-32-amd64
+-rw-r--r-- 1 root root 254K Sep 21 01:53 config-6.1.0-40-amd64
+drwxr-xr-x 5 root root 1.0K Oct  9 15:36 grub
+-rw-r--r-- 1 root root  33M Mar  6  2025 initrd.img-6.1.0-31-amd64
+-rw-r--r-- 1 root root  33M Mar 29  2025 initrd.img-6.1.0-32-amd64
+-rw-r--r-- 1 root root  33M Oct  9 15:37 initrd.img-6.1.0-40-amd64
+drwx------ 2 root root  12K Mar  6  2025 lost+found
+-rw-r--r-- 1 root root   83 Feb  7  2025 System.map-6.1.0-31-amd64
+-rw-r--r-- 1 root root   83 Mar  6  2025 System.map-6.1.0-32-amd64
+-rw-r--r-- 1 root root   83 Sep 21 01:53 System.map-6.1.0-40-amd64
+-rw-r--r-- 1 root root 7.9M Feb  7  2025 vmlinuz-6.1.0-31-amd64
+-rw-r--r-- 1 root root 7.9M Mar  6  2025 vmlinuz-6.1.0-32-amd64
+-rw-r--r-- 1 root root 7.9M Sep 21 01:53 vmlinuz-6.1.0-40-amd64
+find / -size +20M | tee {eltex-pg2-v17}_part3_gt20M.log
+find -type f -mtime -1
+which find
+file /usr/bin/find
+file /boot/initrd.img*
