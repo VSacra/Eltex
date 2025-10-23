@@ -1,0 +1,200 @@
+root@eltex-practice2-pg2-v17:~# git config --global user.name "VSacra"
+root@eltex-practice2-pg2-v17:~# git config --global user.email "usovavictoria17@gmail.com"
+root@eltex-practice2-pg2-v17:~# git config --global init.defaultBranch main
+root@eltex-practice2-pg2-v17:~# apt update
+Hit:1 http://ru.archive.ubuntu.com/ubuntu noble InRelease
+Get:2 http://security.ubuntu.com/ubuntu noble-security InRelease [126 kB]
+Get:3 http://ru.archive.ubuntu.com/ubuntu noble-updates InRelease [126 kB]
+Get:4 http://ru.archive.ubuntu.com/ubuntu noble-backports InRelease [126 kB]
+Get:5 http://security.ubuntu.com/ubuntu noble-security/main amd64 Components [21.5 kB]
+Get:6 http://ru.archive.ubuntu.com/ubuntu noble-updates/main amd64 Packages [1,535 kB]
+Get:7 http://security.ubuntu.com/ubuntu noble-security/restricted amd64 Components [208 B]
+Get:8 http://security.ubuntu.com/ubuntu noble-security/universe amd64 Components [52.3 kB]
+Get:9 http://security.ubuntu.com/ubuntu noble-security/multiverse amd64 Components [208 B]
+Get:10 http://ru.archive.ubuntu.com/ubuntu noble-updates/main amd64 Components [175 kB]
+Get:11 http://ru.archive.ubuntu.com/ubuntu noble-updates/main amd64 c-n-f Metadata [15.3 kB]
+Get:12 http://ru.archive.ubuntu.com/ubuntu noble-updates/restricted amd64 Components [212 B]
+Get:13 http://ru.archive.ubuntu.com/ubuntu noble-updates/universe amd64 Packages [1,496 kB]
+Get:14 http://ru.archive.ubuntu.com/ubuntu noble-updates/universe amd64 Components [378 kB]
+Get:15 http://ru.archive.ubuntu.com/ubuntu noble-updates/multiverse amd64 Components [940 B]
+Get:16 http://ru.archive.ubuntu.com/ubuntu noble-backports/main amd64 Components [7,148 B]
+Get:17 http://ru.archive.ubuntu.com/ubuntu noble-backports/restricted amd64 Components [212 B]
+Get:18 http://ru.archive.ubuntu.com/ubuntu noble-backports/universe amd64 Components [11.0 kB]
+Get:19 http://ru.archive.ubuntu.com/ubuntu noble-backports/multiverse amd64 Components [212 B]
+Fetched 4,072 kB in 2s (1,732 kB/s)
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+80 packages can be upgraded. Run 'apt list --upgradable' to see them.
+root@eltex-practice2-pg2-v17:~# apt install git gh
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+git is already the newest version (1:2.43.0-1ubuntu7.3).
+git set to manually installed.
+The following NEW packages will be installed:
+  gh
+0 upgraded, 1 newly installed, 0 to remove and 80 not upgraded.
+Need to get 8,836 kB of archives.
+After this operation, 45.4 MB of additional disk space will be used.
+Do you want to continue? [Y/n] y
+Get:1 http://ru.archive.ubuntu.com/ubuntu noble-updates/universe amd64 gh amd64 2.45.0-1ubuntu0.3 [8,836 kB]
+Fetched 8,836 kB in 1s (8,733 kB/s)
+Selecting previously unselected package gh.
+(Reading database ... 124980 files and directories currently installed.)
+Preparing to unpack .../gh_2.45.0-1ubuntu0.3_amd64.deb ...
+Unpacking gh (2.45.0-1ubuntu0.3) ...
+Setting up gh (2.45.0-1ubuntu0.3) ...
+Processing triggers for man-db (2.12.0-4build2) ...
+Scanning processes...
+Scanning candidates...
+Scanning linux images...
+
+Pending kernel upgrade!
+Running kernel version:
+  6.8.0-55-generic
+Diagnostics:
+  The currently running kernel version is not the expected kernel version
+6.8.0-86-generic.
+
+Restarting the system to load the new kernel will not be handled automatically,
+so you should consider rebooting.
+
+Restarting services...
+
+Service restarts being deferred:
+ /etc/needrestart/restart.d/dbus.service
+ systemctl restart getty@tty1.service
+ systemctl restart systemd-logind.service
+ systemctl restart unattended-upgrades.service
+
+No containers need to be restarted.
+
+User sessions running outdated binaries:
+ root @ session #26: sshd[1469]
+ root @ user manager service: systemd[1473]
+
+No VM guests are running outdated hypervisor (qemu) binaries on this host.
+root@eltex-practice2-pg2-v17:~# ssh-keygen -t ed25519 -f ~/.ssh/VSacra
+Generating public/private ed25519 key pair.
+Enter passphrase (empty for no passphrase):
+Enter same passphrase again:
+Your identification has been saved in /root/.ssh/VSacra
+Your public key has been saved in /root/.ssh/VSacra.pub
+The key fingerprint is:
+SHA256:OxOvXW8ImROAMUdxGK1rTcyvigbOicT3gg03RxHvHlQ root@eltex-practice2-pg2-v17
+The key's randomart image is:
++--[ED25519 256]--+
+|      +===E      |
+|      o+oo.      |
+|       .o=       |
+|      .o. =      |
+| .   .  S+ =     |
+|  + = ..o=* .    |
+| . X * .= .+..   |
+|  o * o. =.....  |
+|     o. o..  ..  |
++----[SHA256]-----+
+root@eltex-practice2-pg2-v17:~# gh auth login
+? What account do you want to log into? GitHub.com
+? What is your preferred protocol for Git operations on this host? SSH
+? Upload your SSH public key to your GitHub account? /root/.ssh/VSacra.pub
+? Title for your SSH key: eltex-practice2-pg2-v17
+? How would you like to authenticate GitHub CLI? Login with a web browser
+
+! First copy your one-time code: 8806-EB4F
+Press Enter to open github.com in your browser...
+! Failed opening a web browser at https://github.com/login/device
+  exec: "xdg-open,x-www-browser,www-browser,wslview": executable file not found in $PATH
+  Please try entering the URL in your browser manually
+✓ Authentication complete.
+- gh config set -h github.com git_protocol ssh
+✓ Configured git protocol
+! Authentication credentials saved in plain text
+✓ Uploaded the SSH key to your GitHub account: /root/.ssh/VSacra.pub
+✓ Logged in as VSacra
+root@eltex-practice2-pg2-v17:~# gh auth setup-git --hostname github.com
+root@eltex-practice2-pg2-v17:~# gh auth status
+github.com
+  ✓ Logged in to github.com account VSacra (/root/.config/gh/hosts.yml)
+  - Active account: true
+  - Git operations protocol: ssh
+  - Token: gho_************************************
+  - Token scopes: 'admin:public_key', 'gist', 'read:org', 'repo'
+root@eltex-practice2-pg2-v17:~# gh repo create --public Eltex
+✓ Created repository VSacra/Eltex on GitHub
+  https://github.com/VSacra/Eltex
+root@eltex-practice2-pg2-v17:~# mkdir ~/Eltex && cd ~/Eltex
+root@eltex-practice2-pg2-v17:~/Eltex# echo "#краткое_описание_репозитория">>README.md
+root@eltex-practice2-pg2-v17:~/Eltex# git init
+Initialized empty Git repository in /root/Eltex/.git/
+root@eltex-practice2-pg2-v17:~/Eltex# git add README.md
+root@eltex-practice2-pg2-v17:~/Eltex# git commit -m "first commit"
+[main (root-commit) 8ddb252] first commit
+ 1 file changed, 1 insertion(+)
+ create mode 100644 README.md
+root@eltex-practice2-pg2-v17:~/Eltex# git branch -M main
+root@eltex-practice2-pg2-v17:~/Eltex# git remote add origin https://github.com/VSacra/Eltex.git
+root@eltex-practice2-pg2-v17:~/Eltex# git status
+On branch main
+nothing to commit, working tree clean
+root@eltex-practice2-pg2-v17:~/Eltex# git push -u origin main
+Enumerating objects: 3, done.
+Counting objects: 100% (3/3), done.
+Delta compression using up to 2 threads
+Compressing objects: 100% (2/2), done.
+Writing objects: 100% (3/3), 265 bytes | 265.00 KiB/s, done.
+Total 3 (delta 0), reused 0 (delta 0), pack-reused 0
+To https://github.com/VSacra/Eltex.git
+ * [new branch]      main -> main
+branch 'main' set up to track 'origin/main'.
+root@eltex-practice2-pg2-v17:~/Eltex# mkdir -p module1/task1
+root@eltex-practice2-pg2-v17:~/Eltex# mkdir -p module1/task2
+root@eltex-practice2-pg2-v17:~/Eltex# mkdir -p module1/task3
+root@eltex-practice2-pg2-v17:~/Eltex# git add .
+root@eltex-practice2-pg2-v17:~/Eltex# git status
+On branch main
+Your branch is up to date with 'origin/main'.
+
+nothing to commit, working tree clean
+root@eltex-practice2-pg2-v17:~/Eltex# git commit
+On branch main
+Your branch is up to date with 'origin/main'.
+
+nothing to commit, working tree clean
+root@eltex-practice2-pg2-v17:~/Eltex# git push
+Everything up-to-date
+root@eltex-practice2-pg2-v17:~/Eltex# mkdir ~/Eltex_clone && cd ~/Eltex_clone
+root@eltex-practice2-pg2-v17:~/Eltex_clone# git clone https://github.com/VSacra/Eltex.git .
+Cloning into '.'...
+remote: Enumerating objects: 3, done.
+remote: Counting objects: 100% (3/3), done.
+remote: Compressing objects: 100% (2/2), done.
+remote: Total 3 (delta 0), reused 3 (delta 0), pack-reused 0 (from 0)
+Receiving objects: 100% (3/3), done.
+root@eltex-practice2-pg2-v17:~/Eltex_clone# git fetch
+root@eltex-practice2-pg2-v17:~/Eltex_clone# git log origin/main
+commit 8ddb25217c5afea355725c1e6cc357845ceddb1a (HEAD -> main, origin/main, origin/HEAD)
+Author: VSacra <usovavictoria17@gmail.com>
+Date:   Thu Oct 23 11:02:19 2025 +0000
+
+    first commit
+root@eltex-practice2-pg2-v17:~/Eltex_clone# git diff main origin/main
+root@eltex-practice2-pg2-v17:~/Eltex_clone# git merge
+Already up to date.
+root@eltex-practice2-pg2-v17:~/Eltex_clone# mkdir -p module2/task1
+root@eltex-practice2-pg2-v17:~/Eltex_clone# mkdir module2/task2
+root@eltex-practice2-pg2-v17:~/Eltex_clone# mkdir module2/task3
+root@eltex-practice2-pg2-v17:~/Eltex_clone# git add .
+root@eltex-practice2-pg2-v17:~/Eltex_clone# git status
+On branch main
+Your branch is up to date with 'origin/main'.
+
+nothing to commit, working tree clean
+root@eltex-practice2-pg2-v17:~/Eltex_clone# git commit
+On branch main
+Your branch is up to date with 'origin/main'.
+
+nothing to commit, working tree clean
+root@eltex-practice2-pg2-v17:~/Eltex_clone# git push
+Everything up-to-date
