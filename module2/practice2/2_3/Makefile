@@ -1,0 +1,106 @@
+CC = gcc
+CFLAGS = -std=c99 -Wall -g
+TARGET = calculator
+SRCS = Main2_3.c Source2_3.c
+
+build: $(TARGET)
+
+$(TARGET): $(SRCS)
+	$(CC) $(CFLAGS) -o $(TARGET) $(SRCS)
+
+run: build
+	./$(TARGET)
+
+# ТЕСТЫ С ЗАДЕРЖКАМИ
+test_addition: build
+	@echo "=== Тест сложения ==="
+	@(echo "5"; sleep 0.3; echo "+"; sleep 0.3; echo "3"; sleep 0.3; echo "q")|tee /dev/tty | ./$(TARGET) || true
+
+test_subtraction: build
+	@echo "=== Тест вычитания ==="
+	@(echo "10"; sleep 0.3; echo "-"; sleep 0.3; echo "4"; sleep 0.3; echo "q") |tee /dev/tty| ./$(TARGET) || true
+
+test_multiplication: build
+	@echo "=== Тест умножения ==="
+	@(echo "6"; sleep 0.3; echo "*"; sleep 0.3; echo "7"; sleep 0.3; echo "q") |tee /dev/tty |./$(TARGET) || true
+
+test_division: build
+	@echo "=== Тест деления ==="
+	@(echo "15"; sleep 0.3; echo "/"; sleep 0.3; echo "3"; sleep 0.3; echo "q") |tee /dev/tty| ./$(TARGET) || true
+
+test_division_by_zero: build
+	@echo "=== Тест деления на ноль ==="
+	@(echo "10"; sleep 0.3; echo "/"; sleep 0.3; echo "0"; sleep 0.3; echo "q") |tee /dev/tty| ./$(TARGET) || true
+
+test_float_numbers: build
+	@echo "=== Тест с дробными числами ==="
+	@(echo "3.14"; sleep 0.3; echo "*"; sleep 0.3; echo "2.5"; sleep 0.3; echo "q")|tee /dev/tty | ./$(TARGET) || true
+
+test_negative_numbers: build
+	@echo "=== Тест с отрицательными числами ==="
+	@(echo "-8"; sleep 0.3; echo "+"; sleep 0.3; echo "5"; sleep 0.3; echo "q")|tee /dev/tty | ./$(TARGET) || true
+
+test_invalid_operation: build
+	@echo "=== Тест неверной операции ==="
+	@(echo "5"; sleep 0.3; echo "x"; sleep 0.3; echo "3"; sleep 0.3; echo "q")|tee /dev/tty | ./$(TARGET) || true
+
+test_invalid_input: build
+	@echo "=== Тест неверного ввода ==="
+	@(echo "abc"; sleep 0.3; echo "q")|tee /dev/tty | ./$(TARGET) || true
+
+# Комплексные тесты
+test_complex: build
+	@echo "=== Комплексный тест (несколько операций) ==="
+	@(echo "12"; sleep 0.3; echo "+"; sleep 0.3; echo "8"; sleep 0.5; \
+	  echo "20"; sleep 0.3; echo "-"; sleep 0.3; echo "5"; sleep 0.5; \
+	  echo "7.5"; sleep 0.3; echo "*"; sleep 0.3; echo "4"; sleep 0.5; \
+	  echo "q")|tee /dev/tty | ./$(TARGET) || true
+
+# Быстрый выход
+test_quick_exit: build
+	@echo "=== Тест быстрого выхода ==="
+	@(echo "q")|tee /dev/tty | ./$(TARGET) || true
+
+# Групповые тесты
+test_arithmetic: test_addition test_subtraction test_multiplication test_division
+	@echo "=== Арифметические тесты завершены ==="
+
+test_errors: test_division_by_zero test_invalid_operation test_invalid_input
+	@echo "=== Тесты ошибок завершены ==="
+
+# Все тесты
+test_all: build
+	@echo "=== ЗАПУСК ВСЕХ ТЕСТОВ КАЛЬКУЛЯТОРА ==="
+	@make test_arithmetic
+	@make test_errors
+	@make test_float_numbers
+	@make test_negative_numbers
+	@make test_complex
+	@make test_quick_exit
+	@echo "=== ВСЕ ТЕСТЫ ЗАВЕРШЕНЫ ==="
+
+# Короткий тест для быстрой проверки
+test_quick: build
+	@echo "=== Быстрый тест ==="
+	@(echo "10"; sleep 0.2; echo "+"; sleep 0.2; echo "5"; sleep 0.2; echo "q")|tee /dev/tty | ./$(TARGET) || true
+
+clean:
+	rm -f $(TARGET)
+
+help:
+	@echo "Доступные команды:"
+	@echo "  make build        - собрать программу"
+	@echo "  make run          - запустить программу (интерактивно)"
+	@echo "  make test_quick   - быстрый тест"
+	@echo "  make test_all     - все тесты"
+	@echo "  make clean        - очистить"
+	@echo ""
+	@echo "Отдельные тесты:"
+	@echo "  make test_addition, test_subtraction, test_multiplication, test_division"
+	@echo "  make test_division_by_zero, test_invalid_operation, test_invalid_input"
+
+.PHONY: build run clean help \
+        test_addition test_subtraction test_multiplication test_division \
+        test_division_by_zero test_float_numbers test_negative_numbers \
+        test_invalid_operation test_invalid_input test_complex test_quick_exit \
+        test_arithmetic test_errors test_all test_quick
