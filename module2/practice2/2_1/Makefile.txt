@@ -1,0 +1,51 @@
+CC = gcc
+CFLAGS = -std=c99 -Wall
+TARGET = phonebook
+SRCS = Main2_1.c Source2_1.c
+
+build: $(TARGET)
+
+$(TARGET): $(SRCS)
+	$(CC) $(CFLAGS) -o $(TARGET) $(SRCS)
+
+run: build
+	./$(TARGET)
+
+# ТЕСТЫ
+test_add: build
+	@echo "=== Тест добавления контактов ==="
+	@echo -e "1\nИван\nИванов\n1\nИванович\n1\n1\n88005553535\n1\nvk.com/ivanov\n2\n2\n4\n5" | ./$(TARGET) || true
+
+test_multiple: build
+	@echo "=== Тест Несколько контактов ==="
+	@echo -e "1\nИван\nИванов\n2\n2\n2\n1\nПетр\nПетров\n2\n2\n2\n1\nАнна\nСмирнова\n2\n2\n2\n4\n5" | ./$(TARGET) || true
+
+test_add_delete: build
+	@echo "=== Тест Добавление и удаление ==="
+	@echo -e "1\nУдалить\nМеня\n2\n2\n2\n4\n3\n1\n4\n5" | ./$(TARGET) || true
+
+test_phones: build
+	@echo "=== Тест телефонных номеров ==="
+	@echo -e "1\nМаксимум\nТелефонов+1\n2\n1\n6\n111\n222\n333\n444\n555\n2\n4\n5" | ./$(TARGET) || true
+
+test_edit: build
+	@echo "=== Тест Редактирование контакта ==="
+	@echo -e "1\nСтарое\nИмя\n2\n2\n2\n4\n2\n1\n1\nНовое\nИмя\n2\n1\n1\n88005553535\n1\nvk\n2\n2\n4\n5" | ./$(TARGET) || true
+
+# Новые тесты
+test_empty: build
+	@echo "=== Тест пустой книги ==="
+	@echo -e "4\n5" | ./$(TARGET) || true
+
+test_social: build
+	@echo "=== Тест соцсетей ==="
+	@echo -e "1\nСоц\nСети\n2\n2\n1\n1\nvk.com/test\n1\nok.ru/test\n1\nt.me/test\n4\n5" | ./$(TARGET) || true
+
+# Запуск всех тестов
+test_all: test_empty test_add test_multiple test_add_delete test_phones test_edit test_social
+	@echo "=== ВСЕ ТЕСТЫ ЗАВЕРШЕНЫ ==="
+
+clean:
+	rm -f $(TARGET)
+
+.PHONY: build run clean test_add test_multiple test_add_delete test_phones test_edit test_empty test_social test_all
