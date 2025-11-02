@@ -20,8 +20,6 @@ typedef struct Contact {
 	int ID;
 }  Contact;
 
-Contact* PhoneBook;
-
 Contact* addContact(Contact);
 Contact* editContact(int id, int k, char str[10], ...);
 int deleteContact(int);
