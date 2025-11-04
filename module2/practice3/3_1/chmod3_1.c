@@ -3,6 +3,7 @@
 #include <sys/stat.h>
 #include <string.h>
 #include <stdio.h>
+#include <ctype.h> 
 
 #ifdef _WIN32
 // Windows definitions
@@ -61,22 +62,22 @@ void printPer() {
 	int c;
 	while ((c = getchar()) != '\n' && c != EOF);
 	char path[256];
-	printf("\nВведите название файла: ");
+	printf("\nР’РІРµРґРёС‚Рµ РЅР°Р·РІР°РЅРёРµ С„Р°Р№Р»Р°: ");
 	fgets(path, sizeof(path), stdin);
 	path[strcspn(path, "\n")] = '\0';
 	int mode = getPerByte(path);
 	if (mode==-1) {
-		printf("\nОшибка чтения файла: %s", path);
+		printf("\nРћС€РёР±РєР° С‡С‚РµРЅРёСЏ С„Р°Р№Р»Р°: %s", path);
 		return;
 	}
-	printf("\nБитовое представление: ");
+	printf("\nР‘РёС‚РѕРІРѕРµ РїСЂРµРґСЃС‚Р°РІР»РµРЅРёРµ: ");
 	for (int i = 8; i >= 0; i--) {
 		printf("%d", (mode >> i) & 1);
 		if (i == 6 || i == 3) printf(" ");
 	}
-	printf("\nRWX-представление: ");
+	printf("\nRWX-РїСЂРµРґСЃС‚Р°РІР»РµРЅРёРµ: ");
 	printPerRWX(mode);
-	printf("\nЧисленное представление: ");
+	printf("\nР§РёСЃР»РµРЅРЅРѕРµ РїСЂРµРґСЃС‚Р°РІР»РµРЅРёРµ: ");
 	printPerNum(mode);
 }
 
@@ -109,11 +110,11 @@ int ToByte(char* mode) {
 void ToByteConsole() {
 	int c;
 	while ((c = getchar()) != '\n' && c != EOF);
-	printf("\nВведите представление без пробелов: ");
+	printf("\nР’РІРµРґРёС‚Рµ РїСЂРµРґСЃС‚Р°РІР»РµРЅРёРµ Р±РµР· РїСЂРѕР±РµР»РѕРІ: ");
 	char mode[11];
 	fgets(mode, sizeof(mode), stdin);
 	int result = ToByte(mode);
-	if (result == -1) printf("\nОшибка! Данные были введены неккоректно.\n");
+	if (result == -1) printf("\nРћС€РёР±РєР°! Р”Р°РЅРЅС‹Рµ Р±С‹Р»Рё РІРІРµРґРµРЅС‹ РЅРµРєРєРѕСЂРµРєС‚РЅРѕ.\n");
 	else for (int i = 8; i >= 0; i--) {
 		printf("%d", (result >> i) & 1);
 		if (i == 6 || i == 3) printf(" ");
@@ -156,17 +157,17 @@ int* chmode(int* per, char* command) {
 		return NULL;
 	}
 
-	// Числовой формат
+	// Р§РёСЃР»РѕРІРѕР№ С„РѕСЂРјР°С‚
 	if (isdigit(command[0]) && isdigit(command[1]) && isdigit(command[2])) {
 		*per = ToByte(command);
 		return per;
 	}
 
-	// Символьный формат 
-	char operations[3][20] = { "" }; // Максимум 3 операции
+	// РЎРёРјРІРѕР»СЊРЅС‹Р№ С„РѕСЂРјР°С‚ 
+	char operations[3][20] = { "" }; // РњР°РєСЃРёРјСѓРј 3 РѕРїРµСЂР°С†РёРё
 	int op_count = 0;
 
-	// Разделяем команду по запятым
+	// Р Р°Р·РґРµР»СЏРµРј РєРѕРјР°РЅРґСѓ РїРѕ Р·Р°РїСЏС‚С‹Рј
 	char* token = strtok(command, ",");
 	while (token != NULL && op_count < 3) {
 		strncpy(operations[op_count], token, sizeof(operations[op_count]) - 1);
@@ -175,13 +176,13 @@ int* chmode(int* per, char* command) {
 		token = strtok(NULL, ",");
 	}
 
-	// Обрабатываем каждую операцию
+	// РћР±СЂР°Р±Р°С‚С‹РІР°РµРј РєР°Р¶РґСѓСЋ РѕРїРµСЂР°С†РёСЋ
 	for (int i = 0; i < op_count; i++) {
 		char who[10] = "";
 		char what[10] = "";
 		char how = ' ';
 
-		// Разбираем отдельную операцию 
+		// Р Р°Р·Р±РёСЂР°РµРј РѕС‚РґРµР»СЊРЅСѓСЋ РѕРїРµСЂР°С†РёСЋ 
 		for (size_t j = 0; j < strlen(operations[i]); j++) {
 			char c = operations[i][j];
 			if (c == '+' || c == '-' || c == '=') {
@@ -203,7 +204,7 @@ int* chmode(int* per, char* command) {
 		}
 
 		if (how == ' ') {
-			return NULL; // Оператор не найден
+			return NULL; // РћРїРµСЂР°С‚РѕСЂ РЅРµ РЅР°Р№РґРµРЅ
 		}
 
 		int whob = getwho(who);
@@ -232,11 +233,11 @@ int* chmode(int* per, char* command) {
 void TestChmod() {
 	int c;
 	while ((c = getchar()) != '\n' && c != EOF);
-	printf("\nВведите представление без пробелов: ");
+	printf("\nР’РІРµРґРёС‚Рµ РїСЂРµРґСЃС‚Р°РІР»РµРЅРёРµ Р±РµР· РїСЂРѕР±РµР»РѕРІ: ");
 	char mode[11]; int per = 0;
 	fgets(mode, sizeof(mode), stdin);
 	mode[strcspn(mode, "\n")] = '\0';
-	if (mode == NULL || strlen(mode) < 3) printf("\nОшибка чтения представления.\n");
+	if (strlen(mode) < 3) printf("\nРћС€РёР±РєР° С‡С‚РµРЅРёСЏ РїСЂРµРґСЃС‚Р°РІР»РµРЅРёСЏ.\n");
 	if (strlen(mode) < 5) per = ToByte(mode);
 	else {
 		if (!isdigit(mode[0])) per = ToByte(mode);
@@ -245,23 +246,23 @@ void TestChmod() {
 			per += mode[i] - '0';
 		}
 	}
-	printf("\nВведите вашу команду:\nchmod ");
+	printf("\nР’РІРµРґРёС‚Рµ РІР°С€Сѓ РєРѕРјР°РЅРґСѓ:\nchmod ");
 	char command[20];
 	fgets(command, sizeof(command), stdin);
 	command[strcspn(command, "\n")] = '\0';
-	if (command == NULL || strlen(command) < 3) printf("\nОшибка чтения команды.\n");
+	if (strlen(command) < 3) printf("\nРћС€РёР±РєР° С‡С‚РµРЅРёСЏ РєРѕРјР°РЅРґС‹.\n");
 	if (chmode(&per, command) == NULL) {
-		printf("\nОшибка выполнения команды!\n");
+		printf("\nРћС€РёР±РєР° РІС‹РїРѕР»РЅРµРЅРёСЏ РєРѕРјР°РЅРґС‹!\n");
 	}
 	else {
-		printf("\nПрава были изменены.\nБитовое представление: ");
+		printf("\nРџСЂР°РІР° Р±С‹Р»Рё РёР·РјРµРЅРµРЅС‹.\nР‘РёС‚РѕРІРѕРµ РїСЂРµРґСЃС‚Р°РІР»РµРЅРёРµ: ");
 		for (int i = 8; i >= 0; i--) {
 			printf("%d", (per >> i) & 1);
 			if (i == 6 || i == 3) printf(" ");
 		}
-		printf("\nRWX-представление: ");
+		printf("\nRWX-РїСЂРµРґСЃС‚Р°РІР»РµРЅРёРµ: ");
 		printPerRWX(per);
-		printf("\nВосьмеричное представление: ");
+		printf("\nР’РѕСЃСЊРјРµСЂРёС‡РЅРѕРµ РїСЂРµРґСЃС‚Р°РІР»РµРЅРёРµ: ");
 		printPerNum(per);
 	}
 }
@@ -270,40 +271,40 @@ void FileChmod() {
 	int c;
 	while ((c = getchar()) != '\n' && c != EOF);
 	char path[256];
-	printf("\nВведите название файла: ");
+	printf("\nР’РІРµРґРёС‚Рµ РЅР°Р·РІР°РЅРёРµ С„Р°Р№Р»Р°: ");
 	fgets(path, sizeof(path), stdin);
 	path[strcspn(path, "\n")] = '\0';
 	int mode = getPerByte(path);
 	if (mode == -1) {
-		printf("\nОшибка чтения файла: %s", path);
+		printf("\nРћС€РёР±РєР° С‡С‚РµРЅРёСЏ С„Р°Р№Р»Р°: %s", path);
 		return;
 	}
-	printf("\nБитовое представление: ");
+	printf("\nР‘РёС‚РѕРІРѕРµ РїСЂРµРґСЃС‚Р°РІР»РµРЅРёРµ: ");
 	for (int i = 8; i >= 0; i--) {
 		printf("%d", (mode >> i) & 1);
 		if (i == 6 || i == 3) printf(" ");
 	}
-	printf("\nRWX-представление: ");
+	printf("\nRWX-РїСЂРµРґСЃС‚Р°РІР»РµРЅРёРµ: ");
 	printPerRWX(mode);
-	printf("\nЧисленное представление: ");
+	printf("\nР§РёСЃР»РµРЅРЅРѕРµ РїСЂРµРґСЃС‚Р°РІР»РµРЅРёРµ: ");
 	printPerNum(mode);
-	printf("\nВведите вашу команду:\nchmod ");
+	printf("\nР’РІРµРґРёС‚Рµ РІР°С€Сѓ РєРѕРјР°РЅРґСѓ:\nchmod ");
 	char command[20];
 	fgets(command, sizeof(command), stdin);
 	command[strcspn(command, "\n")] = '\0';
-	if (command == NULL || strlen(command) < 3) printf("\nОшибка чтения команды.\n");
+	if (strlen(command) < 3) printf("\nРћС€РёР±РєР° С‡С‚РµРЅРёСЏ РєРѕРјР°РЅРґС‹.\n");
 	if (chmode(&mode, command) == NULL) {
-		printf("\nОшибка выполнения команды!\n");
+		printf("\nРћС€РёР±РєР° РІС‹РїРѕР»РЅРµРЅРёСЏ РєРѕРјР°РЅРґС‹!\n");
 	}
 	else {
-		printf("\nПрава были изменены.\nБитовое представление: ");
+		printf("\nРџСЂР°РІР° Р±С‹Р»Рё РёР·РјРµРЅРµРЅС‹.\nР‘РёС‚РѕРІРѕРµ РїСЂРµРґСЃС‚Р°РІР»РµРЅРёРµ: ");
 		for (int i = 8; i >= 0; i--) {
 			printf("%d", (mode >> i) & 1);
 			if (i == 6 || i == 3) printf(" ");
 		}
-		printf("\nRWX-представление: ");
+		printf("\nRWX-РїСЂРµРґСЃС‚Р°РІР»РµРЅРёРµ: ");
 		printPerRWX(mode);
-		printf("\nВосьмеричное представление: ");
+		printf("\nР’РѕСЃСЊРјРµСЂРёС‡РЅРѕРµ РїСЂРµРґСЃС‚Р°РІР»РµРЅРёРµ: ");
 		printPerNum(mode);
 	}
 }
