@@ -1,0 +1,21 @@
+CC = gcc
+CFLAGS = -std=c99 -Wall -g
+TARGET = Chmod
+SRCS = Main3_1.c chmod3_1.c
+build: $(TARGET)
+
+$(TARGET): $(SRCS)
+	$(CC) $(CFLAGS) -o $(TARGET) $(SRCS)
+
+
+run: build
+	./$(TARGET)
+
+#Тест
+test: build)
+	@(echo "1"; sleep 0.7; echo "rwxr-x---"; sleep 0.7; echo "2"; sleep 0.7; echo "000000000"; sleep 0.7; echo "531"; sleep 0.7; echo"3"; sleep 0.7; echo "Main3_1.c"; sleep 0.7;  echo"4"; sleep 0.7; "Main3_1.c"; sleep 0.7; echo "u+x,g-r,o=x"; sleep 0.7; echo "q") |tee /dev/tty | ./$(TARGET) || true
+
+clean:
+	rm -f $(TARGET)
+
+.PHONY: build run clean test
