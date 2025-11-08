@@ -1,3 +1,4 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include "IPV4.h"
 #include <stdio.h>
 #include <string.h>
@@ -6,23 +7,22 @@
 
 int main() {
 	while (1) {
-		system("chcp 1251");
-		printf("\nСимуляция отправки пакетов. Чтобы продолжить введите любую кнокку или введите q для выхода\n");
+		printf("\nРЎРёРјСѓР»СЏС†РёСЏ РѕС‚РїСЂР°РІРєРё РїР°РєРµС‚РѕРІ. Р§С‚РѕР±С‹ РїСЂРѕРґРѕР»Р¶РёС‚СЊ РІРІРµРґРёС‚Рµ Р»СЋР±СѓСЋ РєРЅРѕРєРєСѓ РёР»Рё РІРІРµРґРёС‚Рµ q РґР»СЏ РІС‹С…РѕРґР°\n");
 		int ch = getchar();
 		while (getchar() != '\n');
 		if (ch == 'q') return 0;
 		char IP[16]; char Mask[16]; int N;
-		printf("\nВведите IP-адрес шлюза: ");
+		printf("\nР’РІРµРґРёС‚Рµ IP-Р°РґСЂРµСЃ С€Р»СЋР·Р°: ");
 		fgets(IP, sizeof(IP), stdin);
 		IP[strcspn(IP, "\n")] = '\0';
-		printf("\nВведите маску: ");
+		printf("\nР’РІРµРґРёС‚Рµ РјР°СЃРєСѓ: ");
 		fgets(Mask, sizeof(Mask), stdin);
 		Mask[strcspn(Mask, "\n")] = '\0';
-		printf("\nВведите количество пакетов: ");
-		scanf_s("%d", &N);
+		printf("\nР’РІРµРґРёС‚Рµ РєРѕР»РёС‡РµСЃС‚РІРѕ РїР°РєРµС‚РѕРІ: ");
+		scanf("%d", &N);
 		while (getchar() != '\n');
-		printf("\nЗапускаем симуляцию.\n");
-		Send(N, &IP, &Mask);
+		printf("\nР—Р°РїСѓСЃРєР°РµРј СЃРёРјСѓР»СЏС†РёСЋ.\n");
+		Send(N, IP, Mask);
 		
 	}
 }

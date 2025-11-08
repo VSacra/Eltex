@@ -21,7 +21,8 @@ uint32_t* getGate(char* IP,uint32_t* adress) {
 		else if (c == '.' || c == '\0') {
 			count = 0;
 			if (octet < 0 || octet>255) return NULL;
-			*adress = (*adress <<8) | octet; octet = 0;
+			*adress = (*adress <<8) | octet; 
+			octet = 0;
 			octetCount++;
 			if (octetCount > 4) return NULL;
 		}
@@ -32,7 +33,7 @@ uint32_t* getGate(char* IP,uint32_t* adress) {
 
 uint32_t* getMask(char* Mask, uint32_t* mask) {
 	int m = 0;
-	if (Mask[0] == '/') { //Найти маску числом
+	if (Mask[0] == '/') { //РќР°Р№С‚Рё РјР°СЃРєСѓ С‡РёСЃР»РѕРј
 		for (int i = 1; Mask[i] != '\0'; i++) {
 			char c = Mask[i];
 			if (c < '0' || c > '9') return NULL;
@@ -63,7 +64,7 @@ uint32_t* getMask(char* Mask, uint32_t* mask) {
 			}
 			else if (c == '.' || c == '\0') {
 				count = 0;
-				if (octet != 0 && octet!=255) return NULL;
+				if (octet < 0 || octet>255) {return NULL;}
 				*mask = (*mask << 8) | octet; octet = 0;
 				octetCount++;
 				if (octetCount > 4) return NULL;
@@ -101,13 +102,13 @@ void printIP(uint32_t ip) {
 
 void Send(int N,char* IP,char* Mask) {
 	uint32_t ad = 0; uint32_t ms = 0;
-	if (getGate(IP, &ad)==NULL) { printf("\nОшибка. Неверно указан IP-адрес шлюза.\n"); return; }
-	if (getMask(Mask, &ms)==NULL) { printf("\nОшибка. Неверно указана маска.\n"); return; }
+	if (getGate(IP, &ad)==NULL) { printf("\nРћС€РёР±РєР°. РќРµРІРµСЂРЅРѕ СѓРєР°Р·Р°РЅ IP-Р°РґСЂРµСЃ С€Р»СЋР·Р°.\n"); return; }
+	if (getMask(Mask, &ms)==NULL) { printf("\nРћС€РёР±РєР°. РќРµРІРµСЂРЅРѕ СѓРєР°Р·Р°РЅР° РјР°СЃРєР°.\n"); return; }
 	int count = genIP(N, ad, ms);
-	printf("\nОтправка пакетов завршена. Статистика:\nIP-адрес подсети: ");
+	printf("\nРћС‚РїСЂР°РІРєР° РїР°РєРµС‚РѕРІ Р·Р°РІСЂС€РµРЅР°. РЎС‚Р°С‚РёСЃС‚РёРєР°:\nIP-Р°РґСЂРµСЃ РїРѕРґСЃРµС‚Рё: ");
 	printIP(ad);
-	printf("\nМаска: ");
+	printf("\nРњР°СЃРєР°: ");
 	printIP(ms);
-	if(count)printf("\nПакетов в подсети: %d\nВ процентном соотношении: %.2f %% \n", count, ((float)count / (float)N * 100));
-	else printf("\nПакетов в подсети: %d\nВ процентном соотношении: 0 %% \n", count);
+	if(count)printf("\nРџР°РєРµС‚РѕРІ РІ РїРѕРґСЃРµС‚Рё: %d\nР’ РїСЂРѕС†РµРЅС‚РЅРѕРј СЃРѕРѕС‚РЅРѕС€РµРЅРёРё: %.2f %% \n", count, ((float)count / (float)N * 100));
+	else printf("\nРџР°РєРµС‚РѕРІ РІ РїРѕРґСЃРµС‚Рё: %d\nР’ РїСЂРѕС†РµРЅС‚РЅРѕРј СЃРѕРѕС‚РЅРѕС€РµРЅРёРё: 0 %% \n", count);
 }
