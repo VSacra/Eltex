@@ -115,11 +115,61 @@ Contact* editContact(int id, int k, char str[10], ...) {
 		case 'n': {
 			int kNum = va_arg(factor, int);
 			char* numArr = va_arg(factor, char*); // Указатель на первый элемент
+			Contact* tmp2=head;
 
 			for (int j = 0; j < kNum && j < MAX_PHONES; j++) {
 				strncpy(tmp->Numbers[j], numArr + j * MAX_STRING, MAX_STRING);
 				tmp->Numbers[j][MAX_STRING - 1] = '\0';
-			}
+				if (j==0){
+					if(tmp->next!=NULL) tmp->next->prev=tmp->prev;
+                                        if(tmp->prev!=NULL) tmp->prev->next=tmp->next;
+					else head=tmp->next;
+
+
+					// Если новый контакт без номера - вставляем в начало
+			                if (strlen(tmp->Numbers[0]) == 0) {
+                        			head->prev = tmp;
+                        			head = tmp;
+                			}
+
+                			for (int i = 0; i < N; i++) {
+                        			if (strlen(tmp2->Numbers[0]) > strlen(tmp->Numbers[0])){
+                                			tmp->next = tmp2;
+                                			tmp->prev = tmp2->prev;
+                                			if (tmp2->prev != NULL) {
+                                        			tmp2->prev->next = tmp;
+                               		 		}
+                                			else {head=tmp;}
+							tmp2->prev=tmp;
+							break;
+						}
+						else if (strlen(tmp2->Numbers[0]) == strlen(tmp->Numbers[0])) {
+							for (int j = 0; j < strlen(tmp->Numbers[0]); j++) {
+								if (tmp2->Numbers[0][j] > tmp->Numbers[0][j]) {
+									tmp->next = tmp2;
+									tmp->prev = tmp2->prev;
+									if (tmp2->prev != NULL) {
+										tmp2->prev->next = tmp;
+									}
+									else {
+										head = tmp; // вставка в начало
+									}
+									tmp2->prev = tmp;
+									break;
+								}
+							}
+							break;
+						}
+						if (tmp2->next != NULL) tmp2 = tmp2->next;
+						else {
+							tmp->next = NULL;
+							tmp->prev = tmp2;
+							tmp2->next = tmp;
+							break;
+							}
+						}
+					}
+				}
 			for (int j = kNum; j < MAX_PHONES; j++) {
 				tmp->Numbers[j][0] = '\0';
 			}
@@ -402,7 +452,7 @@ void editConsole() {
 	int c;
 	while ((c = getchar()) != '\n' && c != EOF) {}
 	Contact* tmp = head;
-	for (int i = 0; i <= Num; i++) {
+	for (int i = 0; i < Num-1; i++) {
 		tmp = tmp->next;
 	}
 	if (tmp->ID == -1) printf("\nОшибка. Нет такого номера.");
