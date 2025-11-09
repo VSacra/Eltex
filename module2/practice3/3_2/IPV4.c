@@ -16,11 +16,12 @@ uint32_t* getGate(char* IP,uint32_t* adress) {
 		if (c >= '0' && c <= '9') {
 			count++;
 			if (count > 3) return NULL;
+			if (octet*10>250 && octet!=0) return NULL;
+			if (octet*10+(c-'0')>255) return NULL;
 			octet = octet * 10 + (c - '0');
 		}
 		else if (c == '.' || c == '\0') {
 			count = 0;
-			if (octet < 0 || octet>255) return NULL;
 			*adress = (*adress <<8) | octet; 
 			octet = 0;
 			octetCount++;
@@ -52,6 +53,7 @@ uint32_t* getMask(char* Mask, uint32_t* mask) {
 	else {
 		int  count = 0;
 		char c = ' ';
+		uint8_t prevoctet = 255;
 		uint8_t octet = 0;
 		int octetCount = 0;
 		int len = strlen(Mask);
@@ -59,13 +61,16 @@ uint32_t* getMask(char* Mask, uint32_t* mask) {
 			c = Mask[i];
 			if (c >= '0' && c <= '9') {
 				count++;
+				if (octet*10>250 && octet!=0) return NULL;
+	                        if (octet*10+(c-'0')>255) return NULL;
 				if (count > 3) return NULL;
 				octet = octet * 10 + (c - '0');
 			}
 			else if (c == '.' || c == '\0') {
+				if (prevoctet<octet) return NULL;
 				count = 0;
-				if (octet < 0 || octet>255) {return NULL;}
-				*mask = (*mask << 8) | octet; octet = 0;
+				*mask = (*mask << 8) | octet; 
+				prevoctet = octet; octet = 0;
 				octetCount++;
 				if (octetCount > 4) return NULL;
 			}
