@@ -114,6 +114,6 @@ void Send(int N,char* IP,char* Mask) {
 	printIP(ad);
 	printf("\nМаска: ");
 	printIP(ms);
-	if(count)printf("\nПакетов в подсети: %d\nВ процентном соотношении: %.2f %% \n", count, ((float)count / (float)N * 100));
-	else printf("\nПакетов в подсети: %d\nВ процентном соотношении: 0 %% \n", count);
+	if(count)printf("\nПакетов в подсети: %d\nВ другие подсети отправлено: %d\nВ процентном соотношении: %.2f %% \n", count,N-count, ((float)count / (float)N * 100));
+	else printf("\nПакетов в подсети: %d\nВ другие подсети отправлено: %d\nВ процентном соотношении: 0 %% \n", count,N-count);
 }
