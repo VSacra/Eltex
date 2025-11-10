@@ -5,40 +5,40 @@
 #include <dirent.h>
 #include <dlfcn.h>
 
-// Структура для хранения загруженной функции
+// РЎС‚СЂСѓРєС‚СѓСЂР° РґР»СЏ С…СЂР°РЅРµРЅРёСЏ Р·Р°РіСЂСѓР¶РµРЅРЅРѕР№ С„СѓРЅРєС†РёРё
 typedef struct {
-    char symbol;        // Символ операции: '+', '-', '*', '/'
-    char* lib_name;     // Имя библиотеки
-    void* handle;       // Handle библиотеки
-    double* (*func)(double, double); // Указатель на функцию
+    char symbol;        // РЎРёРјРІРѕР» РѕРїРµСЂР°С†РёРё: '+', '-', '*', '/'
+    char* lib_name;     // РРјСЏ Р±РёР±Р»РёРѕС‚РµРєРё
+    void* handle;       // Handle Р±РёР±Р»РёРѕС‚РµРєРё
+    double* (*func)(double, double); // РЈРєР°Р·Р°С‚РµР»СЊ РЅР° С„СѓРЅРєС†РёСЋ
 } Operation;
 
 Operation operations[10];
 int op_count = 0;
 
-// Функция для загрузки библиотек из каталога
+// Р¤СѓРЅРєС†РёСЏ РґР»СЏ Р·Р°РіСЂСѓР·РєРё Р±РёР±Р»РёРѕС‚РµРє РёР· РєР°С‚Р°Р»РѕРіР°
 void load_libraries(const char* dir_path) {
     DIR* dir = opendir(dir_path);
     if (!dir) {
-        printf("Ошибка: не могу открыть каталог %s\n", dir_path);
+        printf("РћС€РёР±РєР°: РЅРµ РјРѕРіСѓ РѕС‚РєСЂС‹С‚СЊ РєР°С‚Р°Р»РѕРі %s\n", dir_path);
         return;
     }
 
     struct dirent* entry;
     while ((entry = readdir(dir)) != NULL) {
-        // Ищем файлы .so
+        // РС‰РµРј С„Р°Р№Р»С‹ .so
         if (strstr(entry->d_name, ".so")) {
             char lib_path[256];
             snprintf(lib_path, sizeof(lib_path), "%s/%s", dir_path, entry->d_name);
 
-            // Загружаем библиотеку
+            // Р—Р°РіСЂСѓР¶Р°РµРј Р±РёР±Р»РёРѕС‚РµРєСѓ
             void* handle = dlopen(lib_path, RTLD_LAZY);
             if (!handle) {
-                printf("Ошибка загрузки %s: %s\n", lib_path, dlerror());
+                printf("РћС€РёР±РєР° Р·Р°РіСЂСѓР·РєРё %s: %s\n", lib_path, dlerror());
                 continue;
             }
 
-            // Определяем тип операции по имени файла
+            // РћРїСЂРµРґРµР»СЏРµРј С‚РёРї РѕРїРµСЂР°С†РёРё РїРѕ РёРјРµРЅРё С„Р°Р№Р»Р°
             char symbol = '?';
             if (strstr(entry->d_name, "sum")) symbol = '+';
             else if (strstr(entry->d_name, "sub")) symbol = '-';
@@ -46,7 +46,7 @@ void load_libraries(const char* dir_path) {
             else if (strstr(entry->d_name, "divide")) symbol = '/';
 
             if (symbol != '?') {
-                // Загружаем функцию
+                // Р—Р°РіСЂСѓР¶Р°РµРј С„СѓРЅРєС†РёСЋ
                 double* (*func)(double, double) = dlsym(handle,
                     (symbol == '+') ? "sum" :
                     (symbol == '-') ? "sub" :
@@ -58,10 +58,10 @@ void load_libraries(const char* dir_path) {
                     operations[op_count].handle = handle;
                     operations[op_count].func = func;
                     op_count++;
-                    printf("Загружена операция: %c из %s\n", symbol, entry->d_name);
+                    printf("Р—Р°РіСЂСѓР¶РµРЅР° РѕРїРµСЂР°С†РёСЏ: %c РёР· %s\n", symbol, entry->d_name);
                 }
                 else {
-                    printf("Ошибка загрузки функции из %s: %s\n", entry->d_name, dlerror());
+                    printf("РћС€РёР±РєР° Р·Р°РіСЂСѓР·РєРё С„СѓРЅРєС†РёРё РёР· %s: %s\n", entry->d_name, dlerror());
                     dlclose(handle);
                 }
             }
@@ -73,7 +73,7 @@ void load_libraries(const char* dir_path) {
     closedir(dir);
 }
 
-// Функция для поиска операции по символу
+// Р¤СѓРЅРєС†РёСЏ РґР»СЏ РїРѕРёСЃРєР° РѕРїРµСЂР°С†РёРё РїРѕ СЃРёРјРІРѕР»Сѓ
 double* (*find_operation(char symbol))(double, double) {
     for (int i = 0; i < op_count; i++) {
         if (operations[i].symbol == symbol) {
@@ -83,7 +83,7 @@ double* (*find_operation(char symbol))(double, double) {
     return NULL;
 }
 
-// Освобождение ресурсов
+// РћСЃРІРѕР±РѕР¶РґРµРЅРёРµ СЂРµСЃСѓСЂСЃРѕРІ
 void cleanup_operations() {
     for (int i = 0; i < op_count; i++) {
         free(operations[i].lib_name);
@@ -92,68 +92,68 @@ void cleanup_operations() {
 }
 
 int main() {
-    // Загружаем библиотеки из каталога 'libs'
+    // Р—Р°РіСЂСѓР¶Р°РµРј Р±РёР±Р»РёРѕС‚РµРєРё РёР· РєР°С‚Р°Р»РѕРіР° 'libs'
     load_libraries("libs");
 
     if (op_count == 0) {
-        printf("Не загружено ни одной операции!\n");
+        printf("РќРµ Р·Р°РіСЂСѓР¶РµРЅРѕ РЅРё РѕРґРЅРѕР№ РѕРїРµСЂР°С†РёРё!\n");
         return 1;
     }
 
-    // Выводим доступные операции
-    printf("\nДоступные операции: ");
+    // Р’С‹РІРѕРґРёРј РґРѕСЃС‚СѓРїРЅС‹Рµ РѕРїРµСЂР°С†РёРё
+    printf("\nР”РѕСЃС‚СѓРїРЅС‹Рµ РѕРїРµСЂР°С†РёРё: ");
     for (int i = 0; i < op_count; i++) {
         printf("%c ", operations[i].symbol);
     }
-    printf("(Для выхода нажмите q)\n");
+    printf("(Р”Р»СЏ РІС‹С…РѕРґР° РЅР°Р¶РјРёС‚Рµ q)\n");
 
     while (1) {
         double Num1, Num2;
         char c;
 
-        printf("Введите выражение (например: 5 + 3): ");
+        printf("Р’РІРµРґРёС‚Рµ РІС‹СЂР°Р¶РµРЅРёРµ: ");
 
-        // Чтение первого числа
+        // Р§С‚РµРЅРёРµ РїРµСЂРІРѕРіРѕ С‡РёСЃР»Р°
         if (scanf("%lf", &Num1) != 1) {
             c = getchar();
             if (c == 'q' || c == 'Q') {
-                printf("Выход из программы.\n");
+                printf("Р’С‹С…РѕРґ РёР· РїСЂРѕРіСЂР°РјРјС‹.\n");
                 break;
             }
-            printf("Ошибка ввода числа!\n");
-            while (getchar() != '\n'); // Очистка буфера
+            printf("РћС€РёР±РєР° РІРІРѕРґР° С‡РёСЃР»Р°!\n");
+            while (getchar() != '\n'); // РћС‡РёСЃС‚РєР° Р±СѓС„РµСЂР°
             continue;
         }
 
-        // Пропуск пробелов и чтение операции
+        // РџСЂРѕРїСѓСЃРє РїСЂРѕР±РµР»РѕРІ Рё С‡С‚РµРЅРёРµ РѕРїРµСЂР°С†РёРё
         while ((c = getchar()) == ' ');
         if (c == '\n') continue;
 
-        // Поиск функции для операции
+        // РџРѕРёСЃРє С„СѓРЅРєС†РёРё РґР»СЏ РѕРїРµСЂР°С†РёРё
         double* (*oper)(double, double) = find_operation(c);
         if (!oper) {
-            printf("Неизвестная операция: %c\n", c);
+            printf("РќРµРёР·РІРµСЃС‚РЅР°СЏ РѕРїРµСЂР°С†РёСЏ: %c\n", c);
             while (getchar() != '\n');
             continue;
         }
 
-        // Чтение второго числа
+        // Р§С‚РµРЅРёРµ РІС‚РѕСЂРѕРіРѕ С‡РёСЃР»Р°
         if (scanf("%lf", &Num2) != 1) {
-            printf("Ошибка ввода второго числа!\n");
+            printf("РћС€РёР±РєР° РІРІРѕРґР° РІС‚РѕСЂРѕРіРѕ С‡РёСЃР»Р°!\n");
             while (getchar() != '\n');
             continue;
         }
 
-        // Очистка буфера
+        // РћС‡РёСЃС‚РєР° Р±СѓС„РµСЂР°
         while ((c = getchar()) != '\n' && c != EOF);
 
-        // Выполнение операции
+        // Р’С‹РїРѕР»РЅРµРЅРёРµ РѕРїРµСЂР°С†РёРё
         double* result = oper(Num1, Num2);
         if (result == NULL) {
-            printf("Ошибка вычисления (возможно деление на ноль)!\n");
+            printf("РћС€РёР±РєР° РІС‹С‡РёСЃР»РµРЅРёСЏ (Р”РµР»РµРЅРёРµ РЅР° РЅРѕР»СЊ)\n");
         }
         else {
-            printf("Результат: %lf\n", *result);
+            printf("Р РµР·СѓР»СЊС‚Р°С‚: %lf\n", *result);
             free(result);
         }
     }
