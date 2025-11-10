@@ -8,12 +8,12 @@ LDFLAGS = -L. -lphonebook -Wl,-rpath,.
 all: $(TARGET)
 
 # Сборка основной программы с динамической библиотекой
-$(TARGET): Main6_1.c $(LIBRARY)
-	$(CC) $(CFLAGS) -o $(TARGET) Main6_1.c $(LDFLAGS)
+$(TARGET): Main6_2.c $(LIBRARY)
+	$(CC) $(CFLAGS) -o $(TARGET) Main6_2.c $(LDFLAGS)
 
 # Создание динамической библиотеки
-$(LIBRARY): PhB6_1.c
-	$(CC) $(CFLAGS) -shared -o $(LIBRARY) PhB6_1.c
+$(LIBRARY): PhB6_2.c
+	$(CC) $(CFLAGS) -shared -o $(LIBRARY) PhB6_2.c
 
 # Очистка
 clean:
