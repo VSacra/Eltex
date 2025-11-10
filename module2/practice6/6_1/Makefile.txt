@@ -1,0 +1,34 @@
+CC = gcc
+CFLAGS = -std=c99 -Wall
+TARGET = phonebook
+LIBRARY = libphonebook.a
+
+# Файлы для библиотеки
+LIB_SRCS = PhB4.c
+LIB_OBJS = $(LIB_SRCS:.c=.o)
+
+# Файлы основной программы
+MAIN_SRCS = Main4.c
+MAIN_OBJS = $(MAIN_SRCS:.c=.o)
+
+all: $(TARGET)
+
+# Сборка основной программы с библиотекой
+$(TARGET): $(MAIN_OBJS) $(LIBRARY)
+	$(CC) $(CFLAGS) -o $(TARGET) $(MAIN_OBJS) -L. -lphonebook
+
+# Создание статической библиотеки
+$(LIBRARY): $(LIB_OBJS)
+	ar rcs $(LIBRARY) $(LIB_OBJS)
+
+# Компиляция объектных файлов
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
+clean:
+	rm -f $(TARGET) $(MAIN_OBJS) $(LIB_OBJS) $(LIBRARY)
+
+run: $(TARGET)
+	./$(TARGET)
+
+.PHONY: all clean run
