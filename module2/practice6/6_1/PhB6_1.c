@@ -19,7 +19,7 @@ Contact* addContact(Contact* NewContact) {
 	else {
 		Contact* tmp = head;
 
-		// Если новый контакт без номера - вставляем в начало
+		// Р•СЃР»Рё РЅРѕРІС‹Р№ РєРѕРЅС‚Р°РєС‚ Р±РµР· РЅРѕРјРµСЂР° - РІСЃС‚Р°РІР»СЏРµРј РІ РЅР°С‡Р°Р»Рѕ
 		if (strlen(NewContact->Numbers[0]) == 0) {
 			NewContact->next = head;
 			NewContact->prev = NULL;
@@ -38,7 +38,7 @@ Contact* addContact(Contact* NewContact) {
 					tmp->prev->next = NewContact;
 				}
 				else {
-					head = NewContact; // если вставка в начало
+					head = NewContact; // РµСЃР»Рё РІСЃС‚Р°РІРєР° РІ РЅР°С‡Р°Р»Рѕ
 				}
 				tmp->prev = NewContact;
 				N++;
@@ -54,7 +54,7 @@ Contact* addContact(Contact* NewContact) {
 							tmp->prev->next = NewContact;
 						}
 						else {
-							head = NewContact; // вставка в начало
+							head = NewContact; // РІСЃС‚Р°РІРєР° РІ РЅР°С‡Р°Р»Рѕ
 						}
 						tmp->prev = NewContact;
 						N++;
@@ -77,8 +77,8 @@ Contact* addContact(Contact* NewContact) {
 }
 
 Contact* editContact(int id, int k, char str[10], ...) {
-	va_list factor;         //указатель va_list
-	va_start(factor, str);    // устанавливаем указатель
+	va_list factor;         //СѓРєР°Р·Р°С‚РµР»СЊ va_list
+	va_start(factor, str);    // СѓСЃС‚Р°РЅР°РІР»РёРІР°РµРј СѓРєР°Р·Р°С‚РµР»СЊ
 	if (head == NULL) return NULL;
 	Contact* tmp = head;
 	for (int i = 0; i < N; i++) {
@@ -114,7 +114,7 @@ Contact* editContact(int id, int k, char str[10], ...) {
 		}
 		case 'n': {
 			int kNum = va_arg(factor, int);
-			char* numArr = va_arg(factor, char*); // Указатель на первый элемент
+			char* numArr = va_arg(factor, char*); // РЈРєР°Р·Р°С‚РµР»СЊ РЅР° РїРµСЂРІС‹Р№ СЌР»РµРјРµРЅС‚
 			Contact* tmp2 = head;
 
 			for (int j = 0; j < kNum && j < MAX_PHONES; j++) {
@@ -126,7 +126,7 @@ Contact* editContact(int id, int k, char str[10], ...) {
 					else head = tmp->next;
 
 
-					// Если новый контакт без номера - вставляем в начало
+					// Р•СЃР»Рё РЅРѕРІС‹Р№ РєРѕРЅС‚Р°РєС‚ Р±РµР· РЅРѕРјРµСЂР° - РІСЃС‚Р°РІР»СЏРµРј РІ РЅР°С‡Р°Р»Рѕ
 					if (strlen(tmp->Numbers[0]) == 0) {
 						head->prev = tmp;
 						head = tmp;
@@ -152,7 +152,7 @@ Contact* editContact(int id, int k, char str[10], ...) {
 										tmp2->prev->next = tmp;
 									}
 									else {
-										head = tmp; // вставка в начало
+										head = tmp; // РІСЃС‚Р°РІРєР° РІ РЅР°С‡Р°Р»Рѕ
 									}
 									tmp2->prev = tmp;
 									break;
@@ -178,7 +178,7 @@ Contact* editContact(int id, int k, char str[10], ...) {
 		case 's': {
 			Net* soc = va_arg(factor, Net*);
 			if (soc) {
-				// Копируем соцсети
+				// РљРѕРїРёСЂСѓРµРј СЃРѕС†СЃРµС‚Рё
 				strncpy(tmp->Soc.VK, soc->VK, MAX_STRING);
 				strncpy(tmp->Soc.OK, soc->OK, MAX_STRING);
 				strncpy(tmp->Soc.TG, soc->TG, MAX_STRING);
@@ -231,7 +231,7 @@ void AddID(Contact* new_id) {
 		id = rand();
 		Deny = 0;
 
-		tmp = head;  // Сбрасываем указатель на начало
+		tmp = head;  // РЎР±СЂР°СЃС‹РІР°РµРј СѓРєР°Р·Р°С‚РµР»СЊ РЅР° РЅР°С‡Р°Р»Рѕ
 		for (int i = 0; i < N && tmp != NULL; i++) {
 			if (tmp->ID == id) {
 				Deny = 1;
@@ -246,10 +246,10 @@ void AddID(Contact* new_id) {
 char* ReadStr() {
 	char buffer[256];
 
-	// Пропускаем \n если он первый в буфере
+	// РџСЂРѕРїСѓСЃРєР°РµРј \n РµСЃР»Рё РѕРЅ РїРµСЂРІС‹Р№ РІ Р±СѓС„РµСЂРµ
 	int first_char = getchar();
 	if (first_char == '\n') {
-		// Если первый символ - \n, пропускаем его и читаем заново
+		// Р•СЃР»Рё РїРµСЂРІС‹Р№ СЃРёРјРІРѕР» - \n, РїСЂРѕРїСѓСЃРєР°РµРј РµРіРѕ Рё С‡РёС‚Р°РµРј Р·Р°РЅРѕРІРѕ
 		if (fgets(buffer, sizeof(buffer), stdin) != NULL) {
 			buffer[strcspn(buffer, "\n")] = '\0';
 
@@ -261,7 +261,7 @@ char* ReadStr() {
 		}
 	}
 	else {
-		// Если первый символ не \n, возвращаем его и читаем
+		// Р•СЃР»Рё РїРµСЂРІС‹Р№ СЃРёРјРІРѕР» РЅРµ \n, РІРѕР·РІСЂР°С‰Р°РµРј РµРіРѕ Рё С‡РёС‚Р°РµРј
 		ungetc(first_char, stdin);
 		if (fgets(buffer, sizeof(buffer), stdin) != NULL) {
 			buffer[strcspn(buffer, "\n")] = '\0';
@@ -280,7 +280,7 @@ char* ReadStr() {
 void addConsole() {
 	Contact* newContact = (Contact*)malloc(sizeof(Contact));
 	if (!newContact) {
-		printf("Ошибка выделения памяти!\n");
+		printf("РћС€РёР±РєР° РІС‹РґРµР»РµРЅРёСЏ РїР°РјСЏС‚Рё!\n");
 		return;
 	}
 	memset(newContact, 0, sizeof(Contact));
@@ -290,149 +290,149 @@ void addConsole() {
 	newContact->next = NULL;
 	newContact->prev = NULL;
 
-	// Имя
-	printf("\nВведите имя контакта: ");
+	// РРјСЏ
+	printf("\nР’РІРµРґРёС‚Рµ РёРјСЏ РєРѕРЅС‚Р°РєС‚Р°: ");
 	char* str = ReadStr();
 	if (str == NULL) {
-		printf("Ошибка чтения имени!\n");
+		printf("РћС€РёР±РєР° С‡С‚РµРЅРёСЏ РёРјРµРЅРё!\n");
 		return;
 	}
 	newContact->Imya = str;
 
-	// Фамилия
-	printf("\nВведите фамилию контакта: ");
+	// Р¤Р°РјРёР»РёСЏ
+	printf("\nР’РІРµРґРёС‚Рµ С„Р°РјРёР»РёСЋ РєРѕРЅС‚Р°РєС‚Р°: ");
 	char* str2 = ReadStr();
 	if (str2 == NULL) {
-		printf("Ошибка чтения фамилии!\n");
-		free(newContact->Imya); // Освобождаем ранее выделенную память
+		printf("РћС€РёР±РєР° С‡С‚РµРЅРёСЏ С„Р°РјРёР»РёРё!\n");
+		free(newContact->Imya); // РћСЃРІРѕР±РѕР¶РґР°РµРј СЂР°РЅРµРµ РІС‹РґРµР»РµРЅРЅСѓСЋ РїР°РјСЏС‚СЊ
 		free(newContact);
 		return;
 	}
 	newContact->Familiya = str2;
 
-	// Отчество
-	printf("\nХотите ввести отчество? 1. Да 2. Нет\n");
+	// РћС‚С‡РµСЃС‚РІРѕ
+	printf("\nРҐРѕС‚РёС‚Рµ РІРІРµСЃС‚Рё РѕС‚С‡РµСЃС‚РІРѕ? 1. Р”Р° 2. РќРµС‚\n");
 	int v;
 	scanf("%d", &v);
 	getchar();
 	if (v == 1) {
-		printf("\nВведите отчество: ");
+		printf("\nР’РІРµРґРёС‚Рµ РѕС‚С‡РµСЃС‚РІРѕ: ");
 		char* str3 = ReadStr();
 		if (str3 == NULL) {
-			printf("Ошибка чтения отчества!\n");
+			printf("РћС€РёР±РєР° С‡С‚РµРЅРёСЏ РѕС‚С‡РµСЃС‚РІР°!\n");
 		}
 		else {
 			newContact->Otchestvo = str3;
 		}
 	}
 	else if (v != 2) {
-		printf("Ошибка! Отчество не будет записано.\n");
+		printf("РћС€РёР±РєР°! РћС‚С‡РµСЃС‚РІРѕ РЅРµ Р±СѓРґРµС‚ Р·Р°РїРёСЃР°РЅРѕ.\n");
 	}
 
 
-	// Номера телефонов
-	printf("\nХотите ввести номер телефона? 1. Да 2. Нет\n");
+	// РќРѕРјРµСЂР° С‚РµР»РµС„РѕРЅРѕРІ
+	printf("\nРҐРѕС‚РёС‚Рµ РІРІРµСЃС‚Рё РЅРѕРјРµСЂ С‚РµР»РµС„РѕРЅР°? 1. Р”Р° 2. РќРµС‚\n");
 	scanf("%d", &v);
 	getchar();
 	int kNum = 0;
 	if (v == 1) {
-		printf("Сколько номеров хотите ввести? ");
+		printf("РЎРєРѕР»СЊРєРѕ РЅРѕРјРµСЂРѕРІ С…РѕС‚РёС‚Рµ РІРІРµСЃС‚Рё? ");
 		scanf("%d", &kNum);
 		if (kNum > MAX_PHONES) {
-			printf("\nОшибка. Превышено допустимое количество номеров, будет записано %d номеров.\n", MAX_PHONES);
+			printf("\nРћС€РёР±РєР°. РџСЂРµРІС‹С€РµРЅРѕ РґРѕРїСѓСЃС‚РёРјРѕРµ РєРѕР»РёС‡РµСЃС‚РІРѕ РЅРѕРјРµСЂРѕРІ, Р±СѓРґРµС‚ Р·Р°РїРёСЃР°РЅРѕ %d РЅРѕРјРµСЂРѕРІ.\n", MAX_PHONES);
 			kNum = MAX_PHONES;
 		}
 
 		getchar();
-		printf("\nВведите номер(а):\n");
+		printf("\nР’РІРµРґРёС‚Рµ РЅРѕРјРµСЂ(Р°):\n");
 
 		for (int i = 0; i < kNum; i++) {
-			printf("Номер %d: ", i + 1);
+			printf("РќРѕРјРµСЂ %d: ", i + 1);
 			fgets(newContact->Numbers[i], MAX_STRING, stdin);
 			newContact->Numbers[i][strcspn(newContact->Numbers[i], "\n")] = '\0';
 
-			// ПРОВЕРКА НА ОБРЕЗАНИЕ
+			// РџР РћР’Р•Р РљРђ РќРђ РћР‘Р Р•Р—РђРќРР•
 			if (strlen(newContact->Numbers[i]) == MAX_STRING - 1) {
-				printf("Предупреждение: номер слишком длинный, обрезан до %d символов.\n", MAX_STRING - 1);
-				// Очищаем остаток буфера
+				printf("РџСЂРµРґСѓРїСЂРµР¶РґРµРЅРёРµ: РЅРѕРјРµСЂ СЃР»РёС€РєРѕРј РґР»РёРЅРЅС‹Р№, РѕР±СЂРµР·Р°РЅ РґРѕ %d СЃРёРјРІРѕР»РѕРІ.\n", MAX_STRING - 1);
+				// РћС‡РёС‰Р°РµРј РѕСЃС‚Р°С‚РѕРє Р±СѓС„РµСЂР°
 				int c;
 				while ((c = getchar()) != '\n' && c != EOF);
 			}
 		}
 	}
 	else if (v != 2) {
-		printf("Ошибка! Номер не будет записан.\n");
+		printf("РћС€РёР±РєР°! РќРѕРјРµСЂ РЅРµ Р±СѓРґРµС‚ Р·Р°РїРёСЃР°РЅ.\n");
 	}
 
-	// Соцсети
-	printf("\nХотите ввести адреса соцсетей? 1. Да 2. Нет\n");
+	// РЎРѕС†СЃРµС‚Рё
+	printf("\nРҐРѕС‚РёС‚Рµ РІРІРµСЃС‚Рё Р°РґСЂРµСЃР° СЃРѕС†СЃРµС‚РµР№? 1. Р”Р° 2. РќРµС‚\n");
 	scanf("%d", &v);
 	getchar();
 	if (v == 1) {
 		// VK
-		printf("\nХотите ввести адрес VK? 1. Да 2. Нет: ");
+		printf("\nРҐРѕС‚РёС‚Рµ РІРІРµСЃС‚Рё Р°РґСЂРµСЃ VK? 1. Р”Р° 2. РќРµС‚: ");
 		scanf("%d", &v);
 		getchar();
 		if (v == 1) {
-			printf("Введите адрес VK: ");
+			printf("Р’РІРµРґРёС‚Рµ Р°РґСЂРµСЃ VK: ");
 			fgets(newContact->Soc.VK, MAX_STRING, stdin);
 			if (strlen(newContact->Soc.VK) == MAX_STRING - 1) {
-				printf("Предупреждение: адрес VK слишком длинный, обрезан до %d символов.\n", MAX_STRING - 1);
+				printf("РџСЂРµРґСѓРїСЂРµР¶РґРµРЅРёРµ: Р°РґСЂРµСЃ VK СЃР»РёС€РєРѕРј РґР»РёРЅРЅС‹Р№, РѕР±СЂРµР·Р°РЅ РґРѕ %d СЃРёРјРІРѕР»РѕРІ.\n", MAX_STRING - 1);
 				int c;
 				while ((c = getchar()) != '\n' && c != EOF);
 			}
 			newContact->Soc.VK[strcspn(newContact->Soc.VK, "\n")] = '\0';
 		}
 		else if (v != 2) {
-			printf("Ошибка! VK не будет записан.\n");
+			printf("РћС€РёР±РєР°! VK РЅРµ Р±СѓРґРµС‚ Р·Р°РїРёСЃР°РЅ.\n");
 		}
 
 		// OK
-		printf("\nХотите ввести адрес OK? 1. Да 2. Нет: ");
+		printf("\nРҐРѕС‚РёС‚Рµ РІРІРµСЃС‚Рё Р°РґСЂРµСЃ OK? 1. Р”Р° 2. РќРµС‚: ");
 		scanf("%d", &v);
 		getchar();
 		if (v == 1) {
-			printf("Введите адрес OK: ");
+			printf("Р’РІРµРґРёС‚Рµ Р°РґСЂРµСЃ OK: ");
 			fgets(newContact->Soc.OK, MAX_STRING, stdin);
 			if (strlen(newContact->Soc.OK) == MAX_STRING - 1) {
-				printf("Предупреждение: адрес OK слишком длинный, обрезан до %d символов.\n", MAX_STRING - 1);
+				printf("РџСЂРµРґСѓРїСЂРµР¶РґРµРЅРёРµ: Р°РґСЂРµСЃ OK СЃР»РёС€РєРѕРј РґР»РёРЅРЅС‹Р№, РѕР±СЂРµР·Р°РЅ РґРѕ %d СЃРёРјРІРѕР»РѕРІ.\n", MAX_STRING - 1);
 				int c;
 				while ((c = getchar()) != '\n' && c != EOF);
 			}
 			newContact->Soc.OK[strcspn(newContact->Soc.OK, "\n")] = '\0';
 		}
 		else if (v != 2) {
-			printf("Ошибка! OK не будет записан.\n");
+			printf("РћС€РёР±РєР°! OK РЅРµ Р±СѓРґРµС‚ Р·Р°РїРёСЃР°РЅ.\n");
 		}
 
 		// TG
-		printf("\nХотите ввести адрес TG? 1. Да 2. Нет: ");
+		printf("\nРҐРѕС‚РёС‚Рµ РІРІРµСЃС‚Рё Р°РґСЂРµСЃ TG? 1. Р”Р° 2. РќРµС‚: ");
 		scanf("%d", &v);
 		getchar();
 		if (v == 1) {
-			printf("Введите адрес TG: ");
+			printf("Р’РІРµРґРёС‚Рµ Р°РґСЂРµСЃ TG: ");
 			fgets(newContact->Soc.TG, MAX_STRING, stdin);
 			if (strlen(newContact->Soc.TG) == MAX_STRING - 1) {
-				printf("Предупреждение: адрес TG слишком длинный, обрезан до %d символов.\n", MAX_STRING - 1);
+				printf("РџСЂРµРґСѓРїСЂРµР¶РґРµРЅРёРµ: Р°РґСЂРµСЃ TG СЃР»РёС€РєРѕРј РґР»РёРЅРЅС‹Р№, РѕР±СЂРµР·Р°РЅ РґРѕ %d СЃРёРјРІРѕР»РѕРІ.\n", MAX_STRING - 1);
 				int c;
 				while ((c = getchar()) != '\n' && c != EOF);
 			}
 			newContact->Soc.TG[strcspn(newContact->Soc.TG, "\n")] = '\0';
 		}
 		else if (v != 2) {
-			printf("Ошибка! TG не будет записан.\n");
+			printf("РћС€РёР±РєР°! TG РЅРµ Р±СѓРґРµС‚ Р·Р°РїРёСЃР°РЅ.\n");
 		}
 	}
 	else if (v != 2) {
-		printf("Ошибка! Соцсети не будут записаны.\n");
+		printf("РћС€РёР±РєР°! РЎРѕС†СЃРµС‚Рё РЅРµ Р±СѓРґСѓС‚ Р·Р°РїРёСЃР°РЅС‹.\n");
 	}
 
-	// Добавление контакта
+	// Р”РѕР±Р°РІР»РµРЅРёРµ РєРѕРЅС‚Р°РєС‚Р°
 	if (addContact(newContact) == NULL) {
-		printf("\nОшибка. Не удалось записать контакт\n");
+		printf("\nРћС€РёР±РєР°. РќРµ СѓРґР°Р»РѕСЃСЊ Р·Р°РїРёСЃР°С‚СЊ РєРѕРЅС‚Р°РєС‚\n");
 	}
 	else {
-		printf("\nКонтакт успешно добавлен.\n");
+		printf("\nРљРѕРЅС‚Р°РєС‚ СѓСЃРїРµС€РЅРѕ РґРѕР±Р°РІР»РµРЅ.\n");
 	}
 
 }
@@ -447,7 +447,7 @@ void editConsole() {
 	int kNum = 0;
 	char numArr[MAX_PHONES][MAX_STRING] = { 0 };
 	int hasSocial = 0;
-	printf("\nВведите номер контакта, который вы хотите изменить: ");
+	printf("\nР’РІРµРґРёС‚Рµ РЅРѕРјРµСЂ РєРѕРЅС‚Р°РєС‚Р°, РєРѕС‚РѕСЂС‹Р№ РІС‹ С…РѕС‚РёС‚Рµ РёР·РјРµРЅРёС‚СЊ: ");
 	scanf("%d", &Num);
 	int c;
 	while ((c = getchar()) != '\n' && c != EOF) {}
@@ -455,62 +455,62 @@ void editConsole() {
 	for (int i = 0; i < Num - 1; i++) {
 		tmp = tmp->next;
 	}
-	if (tmp->ID == -1) printf("\nОшибка. Нет такого номера.");
+	if (tmp->ID == -1) printf("\nРћС€РёР±РєР°. РќРµС‚ С‚Р°РєРѕРіРѕ РЅРѕРјРµСЂР°.");
 	Net Soc = tmp->Soc;
 	id = tmp->ID;
-	printf("\nХотите изменить имя? 1. Да 2. Нет\n");
+	printf("\nРҐРѕС‚РёС‚Рµ РёР·РјРµРЅРёС‚СЊ РёРјСЏ? 1. Р”Р° 2. РќРµС‚\n");
 	scanf("%d", &des);
 	while ((c = getchar()) != '\n' && c != EOF) {}
 	if (des == 1) {
-		printf("Введите новое имя: ");
+		printf("Р’РІРµРґРёС‚Рµ РЅРѕРІРѕРµ РёРјСЏ: ");
 		Imya = ReadStr();
 		strcat(str, "i");
 		k++;
 	}
-	if (des != 1 && des != 2)printf("Ошибка. Имя не будет изменено.\n");
+	if (des != 1 && des != 2)printf("РћС€РёР±РєР°. РРјСЏ РЅРµ Р±СѓРґРµС‚ РёР·РјРµРЅРµРЅРѕ.\n");
 	des = 0;
-	printf("\nХотите изменить фамилию? 1. Да 2. Нет\n");
+	printf("\nРҐРѕС‚РёС‚Рµ РёР·РјРµРЅРёС‚СЊ С„Р°РјРёР»РёСЋ? 1. Р”Р° 2. РќРµС‚\n");
 	scanf("%d", &des);
 	if (des == 1) {
-		printf("Введите новую фамилию: ");
+		printf("Р’РІРµРґРёС‚Рµ РЅРѕРІСѓСЋ С„Р°РјРёР»РёСЋ: ");
 		Fam = ReadStr();
 		strcat(str, "f"); k++;
 	}
-	if (des != 1 && des != 2)printf("Ошибка. Фамилия не будет изменена.\n");
+	if (des != 1 && des != 2)printf("РћС€РёР±РєР°. Р¤Р°РјРёР»РёСЏ РЅРµ Р±СѓРґРµС‚ РёР·РјРµРЅРµРЅР°.\n");
 	des = 0;
-	printf("\nХотите изменить отчество? 1. Да 2. Нет\n");
+	printf("\nРҐРѕС‚РёС‚Рµ РёР·РјРµРЅРёС‚СЊ РѕС‚С‡РµСЃС‚РІРѕ? 1. Р”Р° 2. РќРµС‚\n");
 	scanf("%d", &des);
 	if (des == 1) {
-		printf("Введите новое отчество: ");
+		printf("Р’РІРµРґРёС‚Рµ РЅРѕРІРѕРµ РѕС‚С‡РµСЃС‚РІРѕ: ");
 		Otch = ReadStr();
 		strcat(str, "o"); k++;
 	}
-	if (des != 1 && des != 2)printf("Ошибка. Отчество не будет изменено.\n");
+	if (des != 1 && des != 2)printf("РћС€РёР±РєР°. РћС‚С‡РµСЃС‚РІРѕ РЅРµ Р±СѓРґРµС‚ РёР·РјРµРЅРµРЅРѕ.\n");
 	des = 0;
-	printf("\nХотите изменить список номеров? 1. Да 2. Нет\n");
+	printf("\nРҐРѕС‚РёС‚Рµ РёР·РјРµРЅРёС‚СЊ СЃРїРёСЃРѕРє РЅРѕРјРµСЂРѕРІ? 1. Р”Р° 2. РќРµС‚\n");
 	scanf("%d", &des);
 	if (des == 1) {
-		printf("Сколько номеров хотите ввести? ");
+		printf("РЎРєРѕР»СЊРєРѕ РЅРѕРјРµСЂРѕРІ С…РѕС‚РёС‚Рµ РІРІРµСЃС‚Рё? ");
 		scanf("%d", &kNum);
 
 		if (kNum > MAX_PHONES) {
-			printf("\nОшибка. Превышено допустимое количество номеров, будет записано %d номеров.\n", MAX_PHONES);
+			printf("\nРћС€РёР±РєР°. РџСЂРµРІС‹С€РµРЅРѕ РґРѕРїСѓСЃС‚РёРјРѕРµ РєРѕР»РёС‡РµСЃС‚РІРѕ РЅРѕРјРµСЂРѕРІ, Р±СѓРґРµС‚ Р·Р°РїРёСЃР°РЅРѕ %d РЅРѕРјРµСЂРѕРІ.\n", MAX_PHONES);
 			kNum = MAX_PHONES;
 		}
 
-		getchar(); // очистка буфера
-		printf("\nВведите номер(а):\n");
+		getchar(); // РѕС‡РёСЃС‚РєР° Р±СѓС„РµСЂР°
+		printf("\nР’РІРµРґРёС‚Рµ РЅРѕРјРµСЂ(Р°):\n");
 
 		for (int i = 0; i < kNum; i++) {
-			printf("Номер %d: ", i + 1);
+			printf("РќРѕРјРµСЂ %d: ", i + 1);
 			fgets(numArr[i], MAX_STRING, stdin);
 
-			// Удаляем символ новой строки
+			// РЈРґР°Р»СЏРµРј СЃРёРјРІРѕР» РЅРѕРІРѕР№ СЃС‚СЂРѕРєРё
 			numArr[i][strcspn(numArr[i], "\n")] = '\0';
 
-			// Проверяем длину
+			// РџСЂРѕРІРµСЂСЏРµРј РґР»РёРЅСѓ
 			if (strlen(numArr[i]) == MAX_STRING - 1) {
-				printf("Предупреждение: номер слишком длинный, обрезан.\n");
+				printf("РџСЂРµРґСѓРїСЂРµР¶РґРµРЅРёРµ: РЅРѕРјРµСЂ СЃР»РёС€РєРѕРј РґР»РёРЅРЅС‹Р№, РѕР±СЂРµР·Р°РЅ.\n");
 				int c;
 				while ((c = getchar()) != '\n' && c != EOF) {}
 			}
@@ -518,74 +518,74 @@ void editConsole() {
 		strcat(str, "n");
 		k++;
 	}
-	if (des != 1 && des != 2)printf("Ошибка. Список номеров не будет изменён.\n");
+	if (des != 1 && des != 2)printf("РћС€РёР±РєР°. РЎРїРёСЃРѕРє РЅРѕРјРµСЂРѕРІ РЅРµ Р±СѓРґРµС‚ РёР·РјРµРЅС‘РЅ.\n");
 	des = 0;
-	printf("\nХотите изменить список адресов соцсетей? 1. Да 2. Нет\n");
+	printf("\nРҐРѕС‚РёС‚Рµ РёР·РјРµРЅРёС‚СЊ СЃРїРёСЃРѕРє Р°РґСЂРµСЃРѕРІ СЃРѕС†СЃРµС‚РµР№? 1. Р”Р° 2. РќРµС‚\n");
 	scanf("%d", &des);
 	if (des == 1) {
 		int v = 0;
-		printf("\nХотите ввести адрес VK? 1. Да 2. Нет: ");
+		printf("\nРҐРѕС‚РёС‚Рµ РІРІРµСЃС‚Рё Р°РґСЂРµСЃ VK? 1. Р”Р° 2. РќРµС‚: ");
 		scanf("%d", &v);
-		getchar(); // очистка буфера после scanf
+		getchar(); // РѕС‡РёСЃС‚РєР° Р±СѓС„РµСЂР° РїРѕСЃР»Рµ scanf
 
 		if (v == 1) {
-			printf("Введите адрес VK: ");
+			printf("Р’РІРµРґРёС‚Рµ Р°РґСЂРµСЃ VK: ");
 			fgets(Soc.VK, MAX_STRING, stdin);
 			Soc.VK[strcspn(Soc.VK, "\n")] = '\0';
 
-			// ПРОВЕРКА НА ОБРЕЗАНИЕ
+			// РџР РћР’Р•Р РљРђ РќРђ РћР‘Р Р•Р—РђРќРР•
 			if (strlen(Soc.VK) == MAX_STRING - 1) {
-				printf("Предупреждение: адрес VK слишком длинный, обрезан до %d символов.\n", MAX_STRING - 1);
-				// Очищаем остаток буфера
+				printf("РџСЂРµРґСѓРїСЂРµР¶РґРµРЅРёРµ: Р°РґСЂРµСЃ VK СЃР»РёС€РєРѕРј РґР»РёРЅРЅС‹Р№, РѕР±СЂРµР·Р°РЅ РґРѕ %d СЃРёРјРІРѕР»РѕРІ.\n", MAX_STRING - 1);
+				// РћС‡РёС‰Р°РµРј РѕСЃС‚Р°С‚РѕРє Р±СѓС„РµСЂР°
 				int c;
 				while ((c = getchar()) != '\n' && c != EOF);
 			}
 			hasSocial = 1;
 		}
 		else if (v != 2) {
-			printf("Ошибка! VK не будет записан.\n");
+			printf("РћС€РёР±РєР°! VK РЅРµ Р±СѓРґРµС‚ Р·Р°РїРёСЃР°РЅ.\n");
 		}
 
-		printf("\nХотите ввести адрес OK? 1. Да 2. Нет: ");
+		printf("\nРҐРѕС‚РёС‚Рµ РІРІРµСЃС‚Рё Р°РґСЂРµСЃ OK? 1. Р”Р° 2. РќРµС‚: ");
 		scanf("%d", &v);
-		getchar(); // очистка буфера после scanf
+		getchar(); // РѕС‡РёСЃС‚РєР° Р±СѓС„РµСЂР° РїРѕСЃР»Рµ scanf
 
 		if (v == 1) {
-			printf("Введите адрес OK: ");
+			printf("Р’РІРµРґРёС‚Рµ Р°РґСЂРµСЃ OK: ");
 			fgets(Soc.OK, MAX_STRING, stdin);
 			Soc.OK[strcspn(Soc.OK, "\n")] = '\0';
 
-			// ПРОВЕРКА НА ОБРЕЗАНИЕ
+			// РџР РћР’Р•Р РљРђ РќРђ РћР‘Р Р•Р—РђРќРР•
 			if (strlen(Soc.OK) == MAX_STRING - 1) {
-				printf("Предупреждение: адрес OK слишком длинный, обрезан до %d символов.\n", MAX_STRING - 1);
+				printf("РџСЂРµРґСѓРїСЂРµР¶РґРµРЅРёРµ: Р°РґСЂРµСЃ OK СЃР»РёС€РєРѕРј РґР»РёРЅРЅС‹Р№, РѕР±СЂРµР·Р°РЅ РґРѕ %d СЃРёРјРІРѕР»РѕРІ.\n", MAX_STRING - 1);
 				int c;
 				while ((c = getchar()) != '\n' && c != EOF);
 			}
 			hasSocial = 1;
 		}
 		else if (v != 2) {
-			printf("Ошибка! OK не будет записан.\n");
+			printf("РћС€РёР±РєР°! OK РЅРµ Р±СѓРґРµС‚ Р·Р°РїРёСЃР°РЅ.\n");
 		}
 
-		printf("\nХотите ввести адрес TG? 1. Да 2. Нет: ");
+		printf("\nРҐРѕС‚РёС‚Рµ РІРІРµСЃС‚Рё Р°РґСЂРµСЃ TG? 1. Р”Р° 2. РќРµС‚: ");
 		scanf("%d", &v);
-		getchar(); // очистка буфера после scanf
+		getchar(); // РѕС‡РёСЃС‚РєР° Р±СѓС„РµСЂР° РїРѕСЃР»Рµ scanf
 
 		if (v == 1) {
-			printf("Введите адрес TG: ");
+			printf("Р’РІРµРґРёС‚Рµ Р°РґСЂРµСЃ TG: ");
 			fgets(Soc.TG, MAX_STRING, stdin);
 			Soc.TG[strcspn(Soc.TG, "\n")] = '\0';
 
-			// ПРОВЕРКА НА ОБРЕЗАНИЕ
+			// РџР РћР’Р•Р РљРђ РќРђ РћР‘Р Р•Р—РђРќРР•
 			if (strlen(Soc.TG) == MAX_STRING - 1) {
-				printf("Предупреждение: адрес TG слишком длинный, обрезан до %d символов.\n", MAX_STRING - 1);
+				printf("РџСЂРµРґСѓРїСЂРµР¶РґРµРЅРёРµ: Р°РґСЂРµСЃ TG СЃР»РёС€РєРѕРј РґР»РёРЅРЅС‹Р№, РѕР±СЂРµР·Р°РЅ РґРѕ %d СЃРёРјРІРѕР»РѕРІ.\n", MAX_STRING - 1);
 				int c;
 				while ((c = getchar()) != '\n' && c != EOF);
 			}
 			hasSocial = 1;
 		}
 		else if (v != 2) {
-			printf("Ошибка! TG не будет записан.\n");
+			printf("РћС€РёР±РєР°! TG РЅРµ Р±СѓРґРµС‚ Р·Р°РїРёСЃР°РЅ.\n");
 		}
 		if (hasSocial) {
 			strcat(str, "s");
@@ -593,12 +593,12 @@ void editConsole() {
 		}
 	}
 	else if (des != 2) {
-		printf("Ошибка. Список адресов соцсетей не будет изменён.\n");
+		printf("РћС€РёР±РєР°. РЎРїРёСЃРѕРє Р°РґСЂРµСЃРѕРІ СЃРѕС†СЃРµС‚РµР№ РЅРµ Р±СѓРґРµС‚ РёР·РјРµРЅС‘РЅ.\n");
 	}
 	if (k > 0) {
 		Contact* result = NULL;
 
-		// Определяем какие параметры передавать на основе содержимого str
+		// РћРїСЂРµРґРµР»СЏРµРј РєР°РєРёРµ РїР°СЂР°РјРµС‚СЂС‹ РїРµСЂРµРґР°РІР°С‚СЊ РЅР° РѕСЃРЅРѕРІРµ СЃРѕРґРµСЂР¶РёРјРѕРіРѕ str
 		if (strcmp(str, "i") == 0) {
 			result = editContact(id, k, str, Imya);
 		}
@@ -693,15 +693,15 @@ void editConsole() {
 			result = editContact(id, k, str, Imya, Fam, Otch, kNum, (char*)numArr, hasSocial ? &Soc : NULL);
 		}
 		else {
-			printf("Ошибка: неизвестная комбинация флагов '%s'\n", str);
+			printf("РћС€РёР±РєР°: РЅРµРёР·РІРµСЃС‚РЅР°СЏ РєРѕРјР±РёРЅР°С†РёСЏ С„Р»Р°РіРѕРІ '%s'\n", str);
 			return;
 		}
 
 		if (result == tmp) {
-			printf("\nКонтакт изменён.\n");
+			printf("\nРљРѕРЅС‚Р°РєС‚ РёР·РјРµРЅС‘РЅ.\n");
 		}
 		else {
-			printf("\nОшибка. Контакт не был изменён.\n");
+			printf("\nРћС€РёР±РєР°. РљРѕРЅС‚Р°РєС‚ РЅРµ Р±С‹Р» РёР·РјРµРЅС‘РЅ.\n");
 		}
 	}
 }
@@ -710,19 +710,19 @@ void deleteConsole() {
 	View();
 	if (head == NULL) return;
 	Contact* tmp = head;
-	printf("\nВведите номер контакта, который хотите удалить: ");
+	printf("\nР’РІРµРґРёС‚Рµ РЅРѕРјРµСЂ РєРѕРЅС‚Р°РєС‚Р°, РєРѕС‚РѕСЂС‹Р№ С…РѕС‚РёС‚Рµ СѓРґР°Р»РёС‚СЊ: ");
 	int num; scanf("%d", &num);
-	if (num<1 || num>N + 1) { printf("\nОшибка. Такого номера не сущесвует\n"); return; }
+	if (num<1 || num>N + 1) { printf("\nРћС€РёР±РєР°. РўР°РєРѕРіРѕ РЅРѕРјРµСЂР° РЅРµ СЃСѓС‰РµСЃРІСѓРµС‚\n"); return; }
 	for (int i = 0; i < num - 1; i++) tmp = tmp->next;
-	if (deleteContact(tmp->ID) == 0) printf("\nКонтакт был успешно удалён\n");
-	else printf("\nОшибка. Не удалось удалить контакт\n");
+	if (deleteContact(tmp->ID) == 0) printf("\nРљРѕРЅС‚Р°РєС‚ Р±С‹Р» СѓСЃРїРµС€РЅРѕ СѓРґР°Р»С‘РЅ\n");
+	else printf("\nРћС€РёР±РєР°. РќРµ СѓРґР°Р»РѕСЃСЊ СѓРґР°Р»РёС‚СЊ РєРѕРЅС‚Р°РєС‚\n");
 }
 
 void View() {
-	printf("Список контактов: \n");
+	printf("РЎРїРёСЃРѕРє РєРѕРЅС‚Р°РєС‚РѕРІ: \n");
 
 	if (head == NULL) {
-		printf("Телефонная книга пуста.\n");
+		printf("РўРµР»РµС„РѕРЅРЅР°СЏ РєРЅРёРіР° РїСѓСЃС‚Р°.\n");
 		return;
 	}
 
@@ -731,26 +731,26 @@ void View() {
 	for (int i = 0; i < N; i++) {
 		printf("\n%d. ", i + 1);
 
-		// ФИО с пробелами
+		// Р¤РРћ СЃ РїСЂРѕР±РµР»Р°РјРё
 		printf("%s ", tmp->Imya);
 		printf("%s ", tmp->Familiya);
 		if (tmp->Otchestvo && tmp->Otchestvo[0] != '\0') printf("%s", tmp->Otchestvo);
 		printf("\n");
 
-		// Номера телефонов (только непустые)
-		printf("Телефоны: ");
+		// РќРѕРјРµСЂР° С‚РµР»РµС„РѕРЅРѕРІ (С‚РѕР»СЊРєРѕ РЅРµРїСѓСЃС‚С‹Рµ)
+		printf("РўРµР»РµС„РѕРЅС‹: ");
 		int hasPhones = 0;
 		for (int j = 0; j < MAX_PHONES; j++) {
-			if (tmp->Numbers[j][0] != '\0') { // Проверяем что номер не пустой
+			if (tmp->Numbers[j][0] != '\0') { // РџСЂРѕРІРµСЂСЏРµРј С‡С‚Рѕ РЅРѕРјРµСЂ РЅРµ РїСѓСЃС‚РѕР№
 				if (hasPhones) printf(", ");
-				printf("%s", tmp->Numbers[j]); // Выводим строку целиком
+				printf("%s", tmp->Numbers[j]); // Р’С‹РІРѕРґРёРј СЃС‚СЂРѕРєСѓ С†РµР»РёРєРѕРј
 				hasPhones = 1;
 			}
 		}
 		printf("\n");
 
-		// Соцсети (только непустые)
-		printf("Соцсети: ");
+		// РЎРѕС†СЃРµС‚Рё (С‚РѕР»СЊРєРѕ РЅРµРїСѓСЃС‚С‹Рµ)
+		printf("РЎРѕС†СЃРµС‚Рё: ");
 		int hasSocial = 0;
 		if (tmp->Soc.VK[0] != '\0') {
 			printf("VK: %s", tmp->Soc.VK);

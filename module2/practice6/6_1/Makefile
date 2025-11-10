@@ -4,11 +4,11 @@ TARGET = phonebook
 LIBRARY = libphonebook.a
 
 # Файлы для библиотеки
-LIB_SRCS = PhB4.c
+LIB_SRCS = PhB6_1.c
 LIB_OBJS = $(LIB_SRCS:.c=.o)
 
 # Файлы основной программы
-MAIN_SRCS = Main4.c
+MAIN_SRCS = Main6_1.c
 MAIN_OBJS = $(MAIN_SRCS:.c=.o)
 
 all: $(TARGET)
