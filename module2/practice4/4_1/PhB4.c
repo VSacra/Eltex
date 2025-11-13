@@ -125,40 +125,22 @@ Contact* editContact(int id, int k, char str[10], ...) {
                                         if(tmp->prev!=NULL) tmp->prev->next=tmp->next;
 					else head=tmp->next;
 
+					for (int i = 0; i < N; i++) {
+						int num1= atoi(tmp2->Numbers[0]);
+						int num2 = atoi(tmp->Numbers[0]);
+						if (num1 > num2) {
+    						// Значит, tmp2 больше, и нужно вставить tmp перед tmp2
+    						tmp->next = tmp2;
+    						tmp->prev = tmp2->prev;
 
-					// Если новый контакт без номера - вставляем в начало
-			                if (strlen(tmp->Numbers[0]) == 0) {
-                        			head->prev = tmp;
-                        			head = tmp;
-                			}
-
-                			for (int i = 0; i < N; i++) {
-                        			if (strlen(tmp2->Numbers[0]) > strlen(tmp->Numbers[0])){
-                                			tmp->next = tmp2;
-                                			tmp->prev = tmp2->prev;
-                                			if (tmp2->prev != NULL) {
-                                        			tmp2->prev->next = tmp;
-                               		 		}
-                                			else {head=tmp;}
-							tmp2->prev=tmp;
-							break;
-						}
-						else if (strlen(tmp2->Numbers[0]) == strlen(tmp->Numbers[0])) {
-							for (int j = 0; j < strlen(tmp->Numbers[0]); j++) {
-								if (tmp2->Numbers[0][j] > tmp->Numbers[0][j]) {
-									tmp->next = tmp2;
-									tmp->prev = tmp2->prev;
-									if (tmp2->prev != NULL) {
-										tmp2->prev->next = tmp;
-									}
-									else {
-										head = tmp; // вставка в начало
-									}
-									tmp2->prev = tmp;
-									break;
-								}
-							}
-							break;
+    						if (tmp2->prev != NULL) {
+        						tmp2->prev->next = tmp;
+    						} else {
+        						head = tmp; // вставка в начало
+    						}
+    						tmp2->prev = tmp;
+    						// вставка выполнена, можно выйти из цикла
+   						break;
 						}
 						if (tmp2->next != NULL) tmp2 = tmp2->next;
 						else {
@@ -166,10 +148,10 @@ Contact* editContact(int id, int k, char str[10], ...) {
 							tmp->prev = tmp2;
 							tmp2->next = tmp;
 							break;
-							}
 						}
 					}
 				}
+			}
 			for (int j = kNum; j < MAX_PHONES; j++) {
 				tmp->Numbers[j][0] = '\0';
 			}
