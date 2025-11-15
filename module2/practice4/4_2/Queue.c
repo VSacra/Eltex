@@ -38,12 +38,12 @@ Elem* removeThis(int priority) {
 
 	while (tmp != NULL) {
 		if (tmp->priority == priority) {
-			// Îáíîâëÿåì ñâÿçè ñîñåäåé
+			// ÐžÐ±Ð½Ð¾Ð²Ð»ÑÐµÐ¼ ÑÐ²ÑÐ·Ð¸ ÑÐ¾ÑÐµÐ´ÐµÐ¹
 			if (tmp->prev != NULL) {
 				tmp->prev->next = tmp->next;
 			}
 			else {
-				// Óäàëÿåì ïåðâûé ýëåìåíò
+				// Ð£Ð´Ð°Ð»ÑÐµÐ¼ Ð¿ÐµÑ€Ð²Ñ‹Ð¹ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚
 				head = tmp->next;
 			}
 
@@ -51,11 +51,11 @@ Elem* removeThis(int priority) {
 				tmp->next->prev = tmp->prev;
 			}
 			else {
-				// Óäàëÿåì ïîñëåäíèé ýëåìåíò
+				// Ð£Ð´Ð°Ð»ÑÐµÐ¼ Ð¿Ð¾ÑÐ»ÐµÐ´Ð½Ð¸Ð¹ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚
 				tail = tmp->prev;
 			}
 
-			// Èçîëèðóåì ýëåìåíò
+			// Ð˜Ð·Ð¾Ð»Ð¸Ñ€ÑƒÐµÐ¼ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚
 			tmp->next = NULL;
 			tmp->prev = NULL;
 			return tmp;
@@ -94,11 +94,11 @@ int testAdd(int N) {
 
 void View() {
 	if (head == NULL) {
-		printf("\nÎ÷åðåäü ïóñòà.\n");
+		printf("\nÐžÑ‡ÐµÑ€ÐµÐ´ÑŒ Ð¿ÑƒÑÑ‚Ð°.\n");
 		return;
 	}
 	Elem* tmp = head;
-	printf("\nÎ÷åðåäü: \n");
+	printf("\nÐžÑ‡ÐµÑ€ÐµÐ´ÑŒ: \n");
 	while (tmp != tail) {
 		printf("{%c %d} ",tmp->type,tmp->priority);
 		tmp = tmp->next;
@@ -109,51 +109,51 @@ void View() {
 void Console(int n) {
 	switch (n) {
 	case 1: {
-		printf("\nÑêîëüêî ýëåìåíòîâ õîòèòå ñãåíåðèðîâàòü?\n");
+		printf("\nÐ¡ÐºÐ¾Ð»ÑŒÐºÐ¾ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ð¾Ð² Ñ…Ð¾Ñ‚Ð¸Ñ‚Ðµ ÑÐ³ÐµÐ½ÐµÑ€Ð¸Ñ€Ð¾Ð²Ð°Ñ‚ÑŒ?\n");
 		int Num = 0, result;
 		scanf("%d",&Num);
 		result = testAdd(Num);
-		if (result == -1) printf("\nÎøèáêà.\n");
+		if (result == -1) printf("\nÐžÑˆÐ¸Ð±ÐºÐ°.\n");
 		break;
 	}
 	case 2: {
-		printf("\nÂâåäèòå òèï ýëåìåíòà: ");
+		printf("\nÐ’Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ñ‚Ð¸Ð¿ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ð°: ");
 		char c;
 		int Num = 0;
 		scanf(" %c",&c);
-		printf("\nÂâåäèòå ïðèîðèòåò ýëåìåíòà: ");
+		printf("\nÐ’Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ð¿Ñ€Ð¸Ð¾Ñ€Ð¸Ñ‚ÐµÑ‚ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ð°: ");
 		scanf("%d", &Num);
 		Elem* newElem = addElem(c,Num);
-		if (newElem==NULL) printf("\nÎøèáêà.\n");
+		if (newElem==NULL) printf("\nÐžÑˆÐ¸Ð±ÐºÐ°.\n");
 		break;
 	}
 	case 3: {
 		Elem* toRemove = removeFirst();
-		if (toRemove == NULL) printf("\nÑïèñîê ïóñò.\n");
+		if (toRemove == NULL) printf("\nÐ¡Ð¿Ð¸ÑÐ¾Ðº Ð¿ÑƒÑÑ‚.\n");
 		else {
-			printf("\nÈçâëå÷åííûé ýëåìåíò: {%c %d}\n",toRemove->type,toRemove->priority);
+			printf("\nÐ˜Ð·Ð²Ð»ÐµÑ‡ÐµÐ½Ð½Ñ‹Ð¹ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚: {%c %d}\n",toRemove->type,toRemove->priority);
 		}
 		break;
 	}
 	case 4: {
 		int Num = 0;
-		printf("\nÂâåäèòå ïðèîðèòåò ýëåìåíòà: ");
+		printf("\nÐ’Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ð¿Ñ€Ð¸Ð¾Ñ€Ð¸Ñ‚ÐµÑ‚ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ð°: ");
 		scanf("%d", &Num);
 		Elem* toRemove = removeThis(Num);
-		if (toRemove == NULL) printf("\nÑïèñîê ïóñò èëè ýëåìåíò ñ çàäàííûì ïðèîðèòåòîì íå íàéäåí.\n");
+		if (toRemove == NULL) printf("\nÐ¡Ð¿Ð¸ÑÐ¾Ðº Ð¿ÑƒÑÑ‚ Ð¸Ð»Ð¸ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚ Ñ Ð·Ð°Ð´Ð°Ð½Ð½Ñ‹Ð¼ Ð¿Ñ€Ð¸Ð¾Ñ€Ð¸Ñ‚ÐµÑ‚Ð¾Ð¼ Ð½Ðµ Ð½Ð°Ð¹Ð´ÐµÐ½.\n");
 		else {
-			printf("\nÈçâëå÷åííûé ýëåìåíò: {%c %d}\n", toRemove->type, toRemove->priority);
+			printf("\nÐ˜Ð·Ð²Ð»ÐµÑ‡ÐµÐ½Ð½Ñ‹Ð¹ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚: {%c %d}\n", toRemove->type, toRemove->priority);
 		}
 		break;
 	}
 	case 5: {
 		int Num = 0;
-		printf("\nÂâåäèòå ïðèîðèòåò ýëåìåíòà: ");
+		printf("\nÐ’Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ð¿Ñ€Ð¸Ð¾Ñ€Ð¸Ñ‚ÐµÑ‚ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ð°: ");
 		scanf("%d", &Num);
 		Elem* toRemove = removeAbout(Num);
-		if (toRemove == NULL) printf("\nÑïèñîê ïóñò èëè ýëåìåíò ñ ïðèîðèòåòîì íå íèæå %d íå íàéäåí.\n",Num);
+		if (toRemove == NULL) printf("\nÐ¡Ð¿Ð¸ÑÐ¾Ðº Ð¿ÑƒÑÑ‚ Ð¸Ð»Ð¸ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚ Ñ Ð¿Ñ€Ð¸Ð¾Ñ€Ð¸Ñ‚ÐµÑ‚Ð¾Ð¼ Ð½Ðµ Ð½Ð¸Ð¶Ðµ %d Ð½Ðµ Ð½Ð°Ð¹Ð´ÐµÐ½.\n",Num);
 		else {
-			printf("\nÈçâëå÷åííûé ýëåìåíò: {%c %d}\n", toRemove->type, toRemove->priority);
+			printf("\nÐ˜Ð·Ð²Ð»ÐµÑ‡ÐµÐ½Ð½Ñ‹Ð¹ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚: {%c %d}\n", toRemove->type, toRemove->priority);
 		}
 		break;
 	}
