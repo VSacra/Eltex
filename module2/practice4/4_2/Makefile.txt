@@ -1,0 +1,19 @@
+# Компилятор и флаги
+CC = gcc
+CFLAGS = -Wall -Wextra -std=c99
+TARGET = queue_program
+SOURCES = Main4_2.c Queue.c
+
+# Основная цель
+$(TARGET): $(SOURCES)
+	$(CC) $(CFLAGS) -o $(TARGET) $(SOURCES)
+
+# Цель для тестирования
+test: $(TARGET)
+	@echo "1\n3\nsleep 1\n6\nsleep 1\n2\nsleep 1\nX\nsleep 1\n100\nsleep 1\n6\nsleep 1\n3\nsleep 1\n1\nsleep 1\n4\nsleep 1\n6\nsleep 1\n4\nsleep 1\n50\nsleep 1\n5\nsleep 1\n150\nsleep 1\n6\nsleep 1\nq" | ./$(TARGET) | tee /dev/tty
+
+# Очистка
+clean:
+	rm -f $(TARGET)
+
+.PHONY: test clean
