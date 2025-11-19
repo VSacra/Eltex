@@ -133,7 +133,7 @@ Contact* editContact(int id, int k, char str[10], ...) {
 		}
 	}
 	va_end(factor);
-	return &tmp;
+	return tmp;
 }
 
 int deleteContact(int id) {
@@ -203,9 +203,13 @@ int deleteContact(int id) {
 		free(tmp->Otchestvo);
 
 		// Копируем строки
-		tmp->Imya = strdup(successor->Imya);
-		tmp->Familiya = strdup(successor->Familiya);
-		tmp->Otchestvo = strdup(successor->Otchestvo);
+		tmp->Imya = (char*)malloc(strlen(successor->Imya) + 1);
+		tmp->Familiya = (char*)malloc(strlen(successor->Familiya) + 1);
+		tmp->Otchestvo = (char*)malloc(strlen(successor->Otchestvo) + 1);
+
+		if (tmp->Imya) strcpy(tmp->Imya, successor->Imya);
+		if (tmp->Familiya) strcpy(tmp->Familiya, successor->Familiya);
+		if (tmp->Otchestvo) strcpy(tmp->Otchestvo, successor->Otchestvo);
 
 		// Копируем номера
 		for (int j = 0; j < MAX_PHONES; j++) {
@@ -462,7 +466,6 @@ void addConsole() {
 
 void editConsole() {
 	if (head == NULL) return;
-	int Num;
 	int des = 0, k = 0;
 	char str[10] = "";
 	char* Imya = NULL, * Fam = NULL, * Otch = NULL;
@@ -759,23 +762,23 @@ void deleteConsole() {
 }
 
 void printTree(Contact* node, int level, char* prefix) {
-	if (node == NULL) return;
-
-	// Выводим правого ребенка
-	char newPrefix[256];
-	snprintf(newPrefix, sizeof(newPrefix), "%s    ", prefix);
-	printTree(node->right, level + 1, newPrefix);
-
-	// Выводим текущий узел
-	printf("%s", prefix);
-	printf("├── ");
-	printf("[ID: %d] %s %s", node->ID, node->Familiya, node->Imya);
-
-
-	// Выводим левого ребенка
-	snprintf(newPrefix, sizeof(newPrefix), "%s    ", prefix);
-	printTree(node->left, level + 1, newPrefix);
+    if (node == NULL) return;
+    
+    // Выводим правого ребенка
+    char newPrefix[256];
+    snprintf(newPrefix, sizeof(newPrefix), "%s    ", prefix);
+    printTree(node->right, level + 1, newPrefix);
+    
+    // Выводим текущий узел
+    printf("%s", prefix);
+    printf("├── ");
+    printf("[ID: %d] %s %s\n", node->ID, node->Familiya, node->Imya);
+        
+    // Выводим левого ребенка
+    snprintf(newPrefix, sizeof(newPrefix), "%s    ", prefix);
+    printTree(node->left, level + 1, newPrefix);
 }
+
 
 void View() {
 	if (head == NULL) {
@@ -784,7 +787,6 @@ void View() {
 	}
 
 	printf("\n=== СТРУКТУРА ДЕРЕВА ===\n");
-	printf("(Balance = высота_левого - высота_правого)\n\n");
 	printTree(head, 0, "");
 	printf("\n");
 }
