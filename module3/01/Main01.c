@@ -1,10 +1,11 @@
 #include <unistd.h>
+#include <sys/types.h>
 #include <errno.h>
 #include <stdlib.h>
 #include <stdio.h>
 
 int obr(char* arg,long* argI, double* argD) {
-	char* endptr; //Указатель на первый символ, который не удалось преобразовать в число
+	char* endptr; //РЈРєР°Р·Р°С‚РµР»СЊ РЅР° РїРµСЂРІС‹Р№ СЃРёРјРІРѕР», РєРѕС‚РѕСЂС‹Р№ РЅРµ СѓРґР°Р»РѕСЃСЊ РїСЂРµРѕР±СЂР°Р·РѕРІР°С‚СЊ РІ С‡РёСЃР»Рѕ
 
 	long value;
 
@@ -26,13 +27,13 @@ int obr(char* arg,long* argI, double* argD) {
 			return 2;
 		}
 	}
-	else return 0;
+	return 0;
 }
 
 int main(int argc, char* argv[]) {
 
 	if (argc == 1) {
-		printf("\nНе было предано ни одного аргумента, кроме названия программы.\n");
+		printf("\nРќРµ Р±С‹Р»Рѕ РїСЂРµРґР°РЅРѕ РЅРё РѕРґРЅРѕРіРѕ Р°СЂРіСѓРјРµРЅС‚Р°, РєСЂРѕРјРµ РЅР°Р·РІР°РЅРёСЏ РїСЂРѕРіСЂР°РјРјС‹.\n");
 	}
 	else {
 		pid_t pid = fork();
@@ -46,19 +47,19 @@ int main(int argc, char* argv[]) {
 				int res = obr(argv[i], &INT, &DOB);
 				switch (res) {
 				case ERANGE: {
-					perror("\nПереполнение.\n");
+					perror("\nРџРµСЂРµРїРѕР»РЅРµРЅРёРµ.\n");
 					return -1;
 				}
 				case 0: {
-					printf("\nАргумент %d обработан процессом #%d: %s\n", i + 1,UID,argv[i]);
+					printf("\nРђСЂРіСѓРјРµРЅС‚ %d РѕР±СЂР°Р±РѕС‚Р°РЅ РїСЂРѕС†РµСЃСЃРѕРј #%d: %s\n", i + 1,UID,argv[i]);
 					break;
 				}
 				case 1: {
-					printf("\nАргумент %d обработан процессом #%d: %s %ld\n", i + 1, UID, argv[i],INT);
+					printf("\nРђСЂРіСѓРјРµРЅС‚ %d РѕР±СЂР°Р±РѕС‚Р°РЅ РїСЂРѕС†РµСЃСЃРѕРј #%d: %s %ld\n", i + 1, UID, argv[i],INT);
 					break;
 				}
 				case 2: {
-					printf("\nАргумент %d обработан процессом #%d: %s %.3f\n", i + 1, UID, argv[i], DOB);
+					printf("\nРђСЂРіСѓРјРµРЅС‚ %d РѕР±СЂР°Р±РѕС‚Р°РЅ РїСЂРѕС†РµСЃСЃРѕРј #%d: %s %.3f\n", i + 1, UID, argv[i], DOB);
 					break;
 				}
 				}
@@ -66,7 +67,7 @@ int main(int argc, char* argv[]) {
 			break;
 		}
 		case -1: {
-			perror("\nНе удалось создать дочерний поток.\n");
+			perror("\nРќРµ СѓРґР°Р»РѕСЃСЊ СЃРѕР·РґР°С‚СЊ РґРѕС‡РµСЂРЅРёР№ РїРѕС‚РѕРє.\n");
 			return -1;
 			break;
 		}
@@ -78,25 +79,23 @@ int main(int argc, char* argv[]) {
 				int res = obr(argv[i], &INT, &DOB);
 				switch (res) {
 				case ERANGE: {
-					perror("\nПереполнение.\n");
+					perror("\nРџРµСЂРµРїРѕР»РЅРµРЅРёРµ.\n");
 					return -1;
 				}
 				case 0: {
-					printf("\nАргумент %d обработан процессом #%d: %s\n", i + 1, UID, argv[i]);
+					printf("\nРђСЂРіСѓРјРµРЅС‚ %d РѕР±СЂР°Р±РѕС‚Р°РЅ РїСЂРѕС†РµСЃСЃРѕРј #%d: %s\n", i + 1, UID, argv[i]);
 					break;
 				}
 				case 1: {
-					printf("\nАргумент %d обработан процессом #%d: %s %ld\n", i + 1, UID, argv[i], INT);
+					printf("\nРђСЂРіСѓРјРµРЅС‚ %d РѕР±СЂР°Р±РѕС‚Р°РЅ РїСЂРѕС†РµСЃСЃРѕРј #%d: %s %ld\n", i + 1, UID, argv[i], INT);
 					break;
 				}
 				case 2: {
-					printf("\nАргумент %d обработан процессом #%d: %s %.3f\n", i + 1, UID, argv[i], DOB);
+					printf("\nРђСЂРіСѓРјРµРЅС‚ %d РѕР±СЂР°Р±РѕС‚Р°РЅ РїСЂРѕС†РµСЃСЃРѕРј #%d: %s %.3f\n", i + 1, UID, argv[i], DOB);
 					break;
 				}
-			}
-		}
-			wait(NULL);
-			break;
+			}}
+			break;}
 		}
 	}
 
