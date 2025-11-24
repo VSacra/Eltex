@@ -5,27 +5,43 @@
 
 int main() {
 	while (1) {
-		printf("\nКомандный итерпритатор. Для выхода введите q.\nВведите команду: \n");
+		printf("\nРљРѕРјР°РЅРґРЅС‹Р№ РёС‚РµСЂРїСЂРёС‚Р°С‚РѕСЂ. Р”Р»СЏ РІС‹С…РѕРґР° РІРІРµРґРёС‚Рµ q.\nР’РІРµРґРёС‚Рµ РєРѕРјР°РЅРґСѓ: \n");
 		char buff[256];
-		scanf("%s", &buff);
+		
+        	// Р§РёС‚Р°РµРј РІСЃСЋ СЃС‚СЂРѕРєСѓ
+        	if (fgets(buff, sizeof(buff), stdin) == NULL) {
+            		printf("\nРќРµ СѓРґР°Р»РѕСЃСЊ СЃС‡РёС‚Р°С‚СЊ РєРѕРјР°РЅРґСѓ\n");
+			return 1;
+        	}
+
+		buff[strcspn(buff, "\n")]=0;
+		if (strlen(buff) == 0) {
+			continue;
+		}
+        
 		if (buff[0] == 'q') return 0;
 		char* arg[200];
-		arg[0] = strtok(buff, " ");
-		for (int i = 1; arg[i] != NULL && i < 200; i++) {
+	
+		int i=0;
+		arg[i] = strtok(buff, " ");
+		while (arg[i] != NULL && i < 200-1) {
+			i++;
 			arg[i] = strtok(NULL, " ");
 		}
+		arg[i]=NULL;
+		
 		pid_t pid = fork();
 
 		switch (pid){
 		case 0: {
 			execvp(arg[0], arg);
 
-			printf("\nКоманда %s не найдена.\n",args[0]);
+			printf("\nРљРѕРјР°РЅРґР° %s РЅРµ РЅР°Р№РґРµРЅР°.\n",arg[0]);
 			return 1;
 			break;
 		}
 		case -1: {
-			printf("\nНе удалось создать дочерний процесс\n");
+			printf("\nРќРµ СѓРґР°Р»РѕСЃСЊ СЃРѕР·РґР°С‚СЊ РґРѕС‡РµСЂРЅРёР№ РїСЂРѕС†РµСЃСЃ\n");
 			return 1;
 			break;
 		}

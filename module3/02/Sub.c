@@ -2,19 +2,19 @@
 #include <stdio.h>
 
 int main (int argc, char* argv[]) {
-    if (argc != 3) {
-        printf("\nНеверный формат!\n");
+    if (argv[3]!=NULL) {
+        printf("\nРќРµРІРµСЂРЅС‹Р№ С„РѕСЂРјР°С‚!\n");
         return 1;
     }
     int sub = 0;
     int num1 = atoi(argv[1]);
-    int num2 = atoi(argv[1]);
+    int num2 = atoi(argv[2]);
     if (num1 == 0 && *argv[1] != '0') {
-        printf("\nВведены символы!\n");
+        printf("\nР’РІРµРґРµРЅС‹ СЃРёРјРІРѕР»С‹!\n");
         return 1;
     }
     if (num2 == 0 && *argv[2] != '0') {
-        printf("\nВведены символы!\n");
+        printf("\nР’РІРµРґРµРЅС‹ СЃРёРјРІРѕР»С‹!\n");
         return 1;
     }
     sub = num1 - num2;

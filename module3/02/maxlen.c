@@ -4,14 +4,14 @@
 
 int main(int argc, char* argv[]) {
     if (argc < 2) {
-        printf("\nНеверный формат!\n");
+        printf("\nРќРµРІРµСЂРЅС‹Р№ С„РѕСЂРјР°С‚!\n");
         return 1;
     }
     int maxlen = 0;
-    for (int i = 0; i < argc; i++) {
+    for (int i = 1; i < argc; i++) {
         int len = strlen(argv[i]);
         if (len > maxlen) maxlen = len;
     }
-    printf("\nМаксималная длина строки %d", maxlen);
+    printf("\nРњР°РєСЃРёРјР°Р»РЅР°СЏ РґР»РёРЅР° СЃС‚СЂРѕРєРё %d", maxlen);
     return 0;
 }
