@@ -21,12 +21,17 @@ typedef struct Contact {
 	struct Contact* right;
 	struct Contact* parent;
 	int level;
+	int height;
 }  Contact;
 
 
 Contact* addContact(Contact*);
 Contact* editContact(int id, int k, char str[10], ...);
 int deleteContact(int);
+
+Contact* insert(Contact*, Contact*);
+Contact* del(Contact*, int);
+Contact* minValueNode(Contact*);
 
 void AddID(Contact*);
 
@@ -36,5 +41,9 @@ void deleteConsole();
 void View();
 void printTree(Contact*, int, char*);
 
+int getHeight(Contact*);
+int getBalance(Contact*);
+Contact* rightRotate(Contact*);
+Contact* leftRotate(Contact*);
 
 char* ReadStr();

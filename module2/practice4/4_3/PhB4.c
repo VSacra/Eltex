@@ -14,57 +14,74 @@ Contact* addContact(Contact* NewContact) {
 	// Генерируем уникальный ID
 	AddID(NewContact);
 
+	// Инициализируем высоту нового узла
+	NewContact->height = 1;
+	NewContact->left = NULL;
+	NewContact->right = NULL;
+	NewContact->parent = NULL;
+
 	if (head == NULL) {
 		head = NewContact;
-		NewContact->left = NULL;
-		NewContact->right = NULL;
 		NewContact->level = 0;
-		NewContact->parent = NULL;
 		N++;
 		return head;
 	}
-	else {
-		Contact* tmp = head;
-		Contact* parent = NULL;
-		int level = 1;
 
-		NewContact->left = NULL;
-		NewContact->right = NULL;
+	head = insert(head, NewContact);
+	N++;
+	return NewContact;
+}
 
-		while (tmp != NULL) {
-			parent = tmp;
-
-			if (NewContact->ID > tmp->ID) {
-				tmp = tmp->right;
-			}
-			else if (NewContact->ID < tmp->ID) {
-				tmp = tmp->left;
-			}
-			else {
-				// Если ID совпадают, идем влево 
-				tmp = tmp->left;
-			}
-
-			if (tmp != NULL) {
-				level++;
-			}
-		}
-
-		// Вставляем новый узел
-		NewContact->parent = parent;
-		NewContact->level = level;
-
-		if (NewContact->ID > parent->ID) {
-			parent->right = NewContact;
-		}
-		else {
-			parent->left = NewContact;
-		}
-
-		N++;
+Contact* insert(Contact* node, Contact* NewContact) {
+	if (node == NULL) {
+		NewContact->level = 0; 
 		return NewContact;
 	}
-	return NULL;
+
+	if (NewContact->ID < node->ID) {
+		node->left = insert(node->left, NewContact);
+		node->left->parent = node;
+	}
+	else if (NewContact->ID > node->ID) {
+		node->right = insert(node->right, NewContact);
+		node->right->parent = node;
+	}
+	else {
+		// Если ID совпадают, идем влево
+		node->left = insert(node->left, NewContact);
+		node->left->parent = node;
+	}
+
+	// Обновляем высоту текущего узла
+	node->height = 1 + max(getHeight(node->left), getHeight(node->right));
+
+	int balance = getBalance(node);
+
+	// Балансировка
+
+	// Левый-левый случай
+	if (balance > 1 && NewContact->ID < node->left->ID) {
+		return rightRotate(node);
+	}
+
+	// Правый-правый случай
+	if (balance < -1 && NewContact->ID > node->right->ID) {
+		return leftRotate(node);
+	}
+
+	// Левый-правый случай
+	if (balance > 1 && NewContact->ID > node->left->ID) {
+		node->left = leftRotate(node->left);
+		return rightRotate(node);
+	}
+
+	// Правый-левый случай
+	if (balance < -1 && NewContact->ID < node->right->ID) {
+		node->right = rightRotate(node->right);
+		return leftRotate(node);
+	}
+
+	return node;
 }
 
 Contact* editContact(int id, int k, char str[10], ...) {
@@ -137,110 +154,131 @@ Contact* editContact(int id, int k, char str[10], ...) {
 }
 
 int deleteContact(int id) {
-	Contact* tmp = head;
 	if (head == NULL) return -1;
 
+	head = del(head, id);
+	N--;
+	return 0;
+}
 
-	while (tmp != NULL) {
-		if (id == tmp->ID) break;
-		else if (id > tmp->ID) tmp = tmp->right;
-		else tmp = tmp->left;
+Contact* del(Contact* root, int id) {
+	if (root == NULL) return root;
+
+	if (id < root->ID) {
+		root->left = del(root->left, id);
 	}
-	
-	if (tmp == NULL) return -1;
-
-	if (tmp->left == NULL && tmp->right == NULL) {
-		if (tmp->parent == NULL) {
-			head = NULL; // Удаляем корень
-		}
-		else if (tmp->parent->left == tmp) {
-			tmp->parent->left = NULL;
-		}
-		else {
-			tmp->parent->right = NULL;
-		}
-		free(tmp->Imya);
-		free(tmp->Familiya);
-		free(tmp->Otchestvo);
-		free(tmp);
-	}
-	else if (tmp->left == NULL || tmp->right == NULL) {
-		Contact* child = (tmp->left != NULL) ? tmp->left : tmp->right;
-
-		if (tmp->parent == NULL) {
-			head = child; // Заменяем корень
-		}
-		else if (tmp->parent->left == tmp) {
-			tmp->parent->left = child;
-		}
-		else {
-			tmp->parent->right = child;
-		}
-		free(tmp->Imya);
-		free(tmp->Familiya);
-		free(tmp->Otchestvo);
-		free(tmp);
+	else if (id > root->ID) {
+		root->right = del(root->right, id);
 	}
 	else {
-		// Находим минимальный узел в правом поддереве
-		Contact* successor = tmp->right;
-		Contact* successorParent = tmp;
+		// Найден узел для удаления
+		if ((root->left == NULL) || (root->right == NULL)) {
+			Contact* temp = root->left ? root->left : root->right;
 
-		while (successor->left != NULL) {
-			successorParent = successor;
-			successor = successor->left;
-		}
+			// Нет детей
+			if (temp == NULL) {
+				temp = root;
+				root = NULL;
+			}
+			else {
+				// Один ребенок
+				*root = *temp; // Копируем содержимое
+			}
 
-		Contact* left = tmp->left;
-		Contact* right = tmp->right;
-
-		// Копируем ВСЕ данные (кроме указателей!)
-		tmp->ID = successor->ID;
-
-		// Освобождаем старые строки
-		free(tmp->Imya);
-		free(tmp->Familiya);
-		free(tmp->Otchestvo);
-
-		// Копируем строки
-		tmp->Imya = (char*)malloc(strlen(successor->Imya) + 1);
-		tmp->Familiya = (char*)malloc(strlen(successor->Familiya) + 1);
-		tmp->Otchestvo = (char*)malloc(strlen(successor->Otchestvo) + 1);
-
-		if (tmp->Imya) strcpy(tmp->Imya, successor->Imya);
-		if (tmp->Familiya) strcpy(tmp->Familiya, successor->Familiya);
-		if (tmp->Otchestvo) strcpy(tmp->Otchestvo, successor->Otchestvo);
-
-		// Копируем номера
-		for (int j = 0; j < MAX_PHONES; j++) {
-			strcpy(tmp->Numbers[j], successor->Numbers[j]);
-		}
-
-		// Копируем соцсети
-		strcpy(tmp->Soc.VK, successor->Soc.VK);
-		strcpy(tmp->Soc.OK, successor->Soc.OK);
-		strcpy(tmp->Soc.TG, successor->Soc.TG);
-
-		// Восстанавливаем указатели
-		tmp->left = left;
-		tmp->right = right;
-
-
-		// Удаляем преемника (у него нет левого ребенка)
-		if (successorParent->left == successor) {
-			successorParent->left = successor->right;
+			// Освобождаем память
+			if (temp) {
+				free(temp->Imya);
+				free(temp->Familiya);
+				free(temp->Otchestvo);
+				free(temp);
+			}
 		}
 		else {
-			successorParent->right = successor->right;
+			// Два ребенка
+			Contact* temp = minValueNode(root->right);
+
+			// Копируем данные
+			root->ID = temp->ID;
+
+			// Освобождаем старые строки и выделяем новую память
+			free(root->Imya);
+			root->Imya = malloc(strlen(temp->Imya) + 1);
+			if (root->Imya) strcpy(root->Imya, temp->Imya);
+
+			free(root->Familiya);
+			root->Familiya = malloc(strlen(temp->Familiya) + 1);
+			if (root->Familiya) strcpy(root->Familiya, temp->Familiya);
+
+			free(root->Otchestvo);
+			if (temp->Otchestvo) {
+				root->Otchestvo = malloc(strlen(temp->Otchestvo) + 1);
+				if (root->Otchestvo) strcpy(root->Otchestvo, temp->Otchestvo);
+			}
+			else {
+				root->Otchestvo = NULL;
+			}
+
+			// Копируем номера телефонов
+			for (int j = 0; j < MAX_PHONES; j++) {
+				strcpy(root->Numbers[j], temp->Numbers[j]);
+			}
+
+			// Копируем соцсети
+			strcpy(root->Soc.VK, temp->Soc.VK);
+			strcpy(root->Soc.OK, temp->Soc.OK);
+			strcpy(root->Soc.TG, temp->Soc.TG);
+
+			// Восстанавливаем указатели 
+			root->left = root->left;
+			root->right = root->right;
+			root->parent = root->parent;
+			root->height = root->height;
+
+			// Удаляем преемника
+			root->right = del(root->right, temp->ID);
 		}
-		free(successor->Imya);
-		free(successor->Familiya);
-		free(successor->Otchestvo);
-		free(successor);
 	}
 
-	N--;
-	return 0; // Успешное удаление
+	if (root == NULL) return root;
+
+	// Обновляем высоту
+	root->height = 1 + max(getHeight(root->left), getHeight(root->right));
+
+	int balance = getBalance(root);
+
+	// Балансировка
+
+	// Левый-левый
+	if (balance > 1 && getBalance(root->left) >= 0) {
+		return rightRotate(root);
+	}
+
+	// Левый-правый
+	if (balance > 1 && getBalance(root->left) < 0) {
+		root->left = leftRotate(root->left);
+		return rightRotate(root);
+	}
+
+	// Правый-правый
+	if (balance < -1 && getBalance(root->right) <= 0) {
+		return leftRotate(root);
+	}
+
+	// Правый-левый
+	if (balance < -1 && getBalance(root->right) > 0) {
+		root->right = rightRotate(root->right);
+		return leftRotate(root);
+	}
+
+	return root;
+}
+
+Contact* minValueNode(Contact* node) {
+	Contact* current = node;
+	while (current->left != NULL) {
+		current = current->left;
+	}
+	return current;
 }
 
 void AddID(Contact* new_id) {
@@ -779,6 +817,57 @@ void printTree(Contact* node, int level, char* prefix) {
     printTree(node->left, level + 1, newPrefix);
 }
 
+int getHeight(Contact* node) {
+	if (node == NULL) return 0;
+	return node->height;
+}
+
+int getBalance(Contact* node) {
+	if (node == NULL) return 0;
+	return getHeight(node->left) - getHeight(node->right);
+}
+
+// Правый поворот
+Contact* rightRotate(Contact* y) {
+	Contact* x = y->left;
+	Contact* T2 = x->right;
+
+	// Выполняем поворот
+	x->right = y;
+	y->left = T2;
+
+	// Обновляем родителей
+	if (T2 != NULL) T2->parent = y;
+	x->parent = y->parent;
+	y->parent = x;
+
+	// Обновляем высоты
+	y->height = max(getHeight(y->left), getHeight(y->right)) + 1;
+	x->height = max(getHeight(x->left), getHeight(x->right)) + 1;
+
+	return x;
+}
+
+// Левый поворот
+Contact* leftRotate(Contact* x) {
+	Contact* y = x->right;
+	Contact* T2 = y->left;
+
+	// Выполняем поворот
+	y->left = x;
+	x->right = T2;
+
+	// Обновляем родителей
+	if (T2 != NULL) T2->parent = x;
+	y->parent = x->parent;
+	x->parent = y;
+
+	// Обновляем высоты
+	x->height = max(getHeight(x->left), getHeight(x->right)) + 1;
+	y->height = max(getHeight(y->left), getHeight(y->right)) + 1;
+
+	return y;
+}
 
 void View() {
 	if (head == NULL) {
