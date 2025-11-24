@@ -43,6 +43,7 @@ void printTree(Contact*, int, char*);
 
 int getHeight(Contact*);
 int getBalance(Contact*);
+int max(int,int);
 Contact* rightRotate(Contact*);
 Contact* leftRotate(Contact*);
 

@@ -801,7 +801,7 @@ void deleteConsole() {
 
 void printTree(Contact* node, int level, char* prefix) {
     if (node == NULL) return;
-    
+  
     // Выводим правого ребенка
     char newPrefix[256];
     snprintf(newPrefix, sizeof(newPrefix), "%s    ", prefix);
@@ -816,6 +816,10 @@ void printTree(Contact* node, int level, char* prefix) {
     snprintf(newPrefix, sizeof(newPrefix), "%s    ", prefix);
     printTree(node->left, level + 1, newPrefix);
 }
+
+ int max(int a, int b) {
+         return (a > b) ? a : b;
+    }
 
 int getHeight(Contact* node) {
 	if (node == NULL) return 0;
