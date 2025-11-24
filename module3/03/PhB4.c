@@ -30,7 +30,7 @@ int save() {
 		tmp = tmp->next;
 		if (tmp == NULL) break;
 	}
-	if (close(file)=-1) return -1;
+	if (close(file)==-1) return -1;
 	return 0;
 }
 
