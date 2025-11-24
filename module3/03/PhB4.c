@@ -12,10 +12,9 @@ int N = 0;
 Contact* head = NULL;
 
 int save() {
-	FILE* file;
-	file = fopen("PhB.txt", O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	if (file == NULL) {
-		printf("\nНе удалось открыть файл.\n");
+	int file=0;
+	file = open("PhB.txt", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (file == -1) {
 		return 1;
 	}
 
@@ -25,14 +24,13 @@ int save() {
 
 	Contact* tmp = head;
 
-	size_t byte;
-
 	for (int i = 0; i < N; i++) {
 		bytes = write(file, tmp, sizeof(Contact));
+		if (bytes==-1) return -1;
 		tmp = tmp->next;
 		if (tmp == NULL) break;
 	}
-	fclose(file);
+	if (close(file)=-1) return -1;
 	return 0;
 }
 
