@@ -15,16 +15,14 @@ Elem* addElem(char typeName, int priority) {
 	elemToAdd->type = typeName;
 	elemToAdd->priority = priority;
 	elemToAdd->next = NULL;
-	elemToAdd->prev = NULL;
 	if (head == NULL || tail == NULL) {
 		head = elemToAdd;
-		head->next = NULL; head->prev = NULL;
+		head->next = NULL; 
 		tail = elemToAdd;
-		tail->next = NULL; tail->prev = NULL;
+		tail->next = NULL;
 		return elemToAdd;
 	}
 	else {
-		elemToAdd->prev = tail;
 		tail->next = elemToAdd;
 		tail = elemToAdd;
 		return elemToAdd;
@@ -35,30 +33,28 @@ Elem* addElem(char typeName, int priority) {
 Elem* removeThis(int priority) {
 	if (head == NULL) return NULL;
 	Elem* tmp = head;
+	
+	if (tmp->priority==priority) {head=tmp->next;
+	if (head==NULL) tail=NULL;
+	tmp->next=NULL;
+	return tmp;
+	}
 
-	while (tmp != NULL) {
-		if (tmp->priority == priority) {
+	while (tmp->next != NULL) {
+		if (tmp->next->priority == priority) {
+			Elem* toRemove = tmp->next;
+
 			// Обновляем связи соседей
-			if (tmp->prev != NULL) {
-				tmp->prev->next = tmp->next;
-			}
-			else {
-				// Удаляем первый элемент
-				head = tmp->next;
-			}
+			tmp->next = tmp->next->next;
 
-			if (tmp->next != NULL) {
-				tmp->next->prev = tmp->prev;
-			}
-			else {
+			if (toRemove==tail){
 				// Удаляем последний элемент
-				tail = tmp->prev;
+				tail = tmp;
 			}
 
 			// Изолируем элемент
-			tmp->next = NULL;
-			tmp->prev = NULL;
-			return tmp;
+			toRemove->next = NULL;
+			return toRemove;
 		}
 		tmp = tmp->next;
 	}
