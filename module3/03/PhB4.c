@@ -25,20 +25,29 @@ int save() {
 	Contact* tmp = head;
 
 	for (int i = 0; i < N; i++) {
-		bytes = write(file, tmp->ID, sizeof(int));
+		bytes = write(file, &(tmp->ID), sizeof(int));
 		if (bytes==-1) return -1;
-		bytes = write(file, strlen(tmp->Imya), sizeof(int));
+
+		int len = strlen(tmp->Imya);
+		bytes = write(file, &len, sizeof(int));
 		if (bytes == -1) return -1;
-		bytes= write(file, tmp->Imya, strlen(tmp->Imya)*sizeof(char));
+		bytes= write(file, tmp->Imya, len);
 		if (bytes == -1) return -1;
-		bytes = write(file, strlen(tmp->Familiya), sizeof(int));
+
+		len=strlen(tmp->Familiya);
+		bytes = write(file, &len, sizeof(int));
 		if (bytes == -1) return -1;
-		bytes = write(file, tmp->Familiya, strlen(tmp->Familiya) * sizeof(char));
+		bytes = write(file, tmp->Familiya, len);
 		if (bytes == -1) return -1;
-		bytes = write(file, strlen(tmp->Otchestvo), sizeof(int));
+
+		int lenem =0;
+		if(tmp->Otchestvo){len =strlen(tmp->Otchestvo);
+		bytes = write(file, &len, sizeof(int));
 		if (bytes == -1) return -1;
-		bytes = write(file, tmp->Otchestvo, strlen(tmp->Otchestvo) * sizeof(char));
-		if (bytes == -1) return -1;
+		bytes = write(file, tmp->Otchestvo, len);
+		if (bytes == -1) return -1;}
+		else bytes = write(file,&lenem,sizeof(int));
+
 		for (int j = 0; j < MAX_PHONES; j++) {
 			bytes = write(file, tmp->Numbers[j], MAX_STRING);
 			if (bytes == -1) return -1;
@@ -50,7 +59,6 @@ int save() {
 		bytes = write(file, tmp->Soc.TG, MAX_STRING);
 		if (bytes == -1) return -1;
 		tmp = tmp->next;
-		if (tmp == NULL) break;
 	}
 	if (close(file)==-1) return -1;
 	return 0;
@@ -73,7 +81,6 @@ Contact* addContact(Contact* NewContact) {
 			head->prev = NewContact;
 			head = NewContact;
 			N++;
-			AddID(NewContact);
 			return NewContact;
 		}
 
@@ -89,7 +96,6 @@ Contact* addContact(Contact* NewContact) {
 				}
 				tmp->prev = NewContact;
 				N++;
-				AddID(NewContact);
 				return NewContact;
 			}
 			else if (strlen(tmp->Numbers[0]) == strlen(NewContact->Numbers[0])) {
@@ -105,7 +111,6 @@ Contact* addContact(Contact* NewContact) {
 						}
 						tmp->prev = NewContact;
 						N++;
-						AddID(NewContact);
 						return NewContact;
 					}
 				}
@@ -115,7 +120,7 @@ Contact* addContact(Contact* NewContact) {
 				NewContact->next = NULL;
 				NewContact->prev = tmp;
 				tmp->next = NewContact;
-				N++; AddID(NewContact);
+				N++; 
 				return NewContact;
 			}
 		}
@@ -456,6 +461,7 @@ void addConsole() {
 		printf("Ошибка! Соцсети не будут записаны.\n");
 	}
 
+	AddID(newContact);
 	// Добавление контакта
 	if (addContact(newContact) == NULL) {
 		printf("\nОшибка. Не удалось записать контакт\n");
