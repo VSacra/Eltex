@@ -23,12 +23,59 @@ int main() {
 
 	while (bytes != 0) {
 		Contact* new = (Contact*)malloc(sizeof(Contact));
-		bytes = read(file, new, sizeof(Contact));
+		int ID = -1;
+		bytes = read(file, ID, sizeof(int));
 		if (bytes==-1){
 			printf("\nОшибка. Не удалось прочитать из файла.\n");
 			return 1;
 		}
-		if (new->Imya==NULL)break;
+		if (ID==-1)break;
+		else {
+			new->ID = ID;
+			bytes = read(file, ID, sizeof(int));
+			if (bytes == -1) {
+				printf("\nОшибка. Не удалось прочитать из файла.\n");
+				return 1;
+			}
+			new->Imya = (char*)malloc(strlen(ID) + 1);
+			bytes = read(file, new->Imya, ID * sizeof(char));
+			if (bytes == -1) {
+				printf("\nОшибка. Не удалось прочитать из файла.\n");
+				return 1;
+			}
+			bytes = read(file, ID, sizeof(int));
+			if (bytes == -1) {
+				printf("\nОшибка. Не удалось прочитать из файла.\n");
+				return 1;
+			}
+			new->Familiya = (char*)malloc(strlen(ID) + 1);
+			bytes = read(file, new->Familiya, ID * sizeof(char));
+			if (bytes == -1) {
+				printf("\nОшибка. Не удалось прочитать из файла.\n");
+				return 1;
+			}
+			bytes = read(file, ID, sizeof(int));
+			if (bytes == -1) {
+				printf("\nОшибка. Не удалось прочитать из файла.\n");
+				return 1;
+			}
+			new->Otchestvo = (char*)malloc(strlen(ID) + 1);
+			bytes = read(file, new->Otchestvo, ID * sizeof(char));
+			if (bytes == -1) {
+				printf("\nОшибка. Не удалось прочитать из файла.\n");
+				return 1;
+			}
+			for (int j = 0; j < MAX_PHONES; j++) {
+				bytes = read(file, new->Numbers[j], MAX_STRING);
+				if (bytes == -1) return -1;
+			}
+			bytes = read(file, new->Soc.VK, MAX_STRING);
+			if (bytes == -1) return -1;
+			bytes = read(file, new->Soc.OK, MAX_STRING);
+			if (bytes == -1) return -1;
+			bytes = read(file, new->Soc.TG, MAX_STRING);
+			if (bytes == -1) return -1;
+		}
 		if(addContact(new)!=new){
 			printf("\nОшибка добавления\n");
 			return 1;

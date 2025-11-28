@@ -25,8 +25,30 @@ int save() {
 	Contact* tmp = head;
 
 	for (int i = 0; i < N; i++) {
-		bytes = write(file, tmp, sizeof(Contact));
+		bytes = write(file, tmp->ID, sizeof(int));
 		if (bytes==-1) return -1;
+		bytes = write(file, strlen(tmp->Imya), sizeof(int));
+		if (bytes == -1) return -1;
+		bytes= write(file, tmp->Imya, strlen(tmp->Imya)*sizeof(char));
+		if (bytes == -1) return -1;
+		bytes = write(file, strlen(tmp->Familiya), sizeof(int));
+		if (bytes == -1) return -1;
+		bytes = write(file, tmp->Familiya, strlen(tmp->Familiya) * sizeof(char));
+		if (bytes == -1) return -1;
+		bytes = write(file, strlen(tmp->Otchestvo), sizeof(int));
+		if (bytes == -1) return -1;
+		bytes = write(file, tmp->Otchestvo, strlen(tmp->Otchestvo) * sizeof(char));
+		if (bytes == -1) return -1;
+		for (int j = 0; j < MAX_PHONES; j++) {
+			bytes = write(file, tmp->Numbers[j], MAX_STRING);
+			if (bytes == -1) return -1;
+		}
+		bytes = write(file, tmp->Soc.VK, MAX_STRING);
+		if (bytes == -1) return -1;
+		bytes = write(file, tmp->Soc.OK, MAX_STRING);
+		if (bytes == -1) return -1;
+		bytes = write(file, tmp->Soc.TG, MAX_STRING);
+		if (bytes == -1) return -1;
 		tmp = tmp->next;
 		if (tmp == NULL) break;
 	}
