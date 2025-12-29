@@ -1,4 +1,3 @@
-
 #include <linux/module.h>
 #include <linux/kernel.h>
 #include <linux/proc_fs.h>
@@ -10,9 +9,9 @@ static int len,temp;
 
 static char *msg;
 
-static int N = 10;
+static const int N = 10;
 
-ssize_t read_proc(struct file *filp,char *buf,size_t count,loff_t *offp )
+static ssize_t read_proc(struct file *filp,char *buf,size_t count,loff_t *offp )
 {
     if(count>temp)
     {
@@ -27,7 +26,7 @@ ssize_t read_proc(struct file *filp,char *buf,size_t count,loff_t *offp )
     return count;
 }
 
-ssize_t write_proc(struct file *filp,const char *buf,size_t count,loff_t *offp)
+static ssize_t write_proc(struct file *filp,const char *buf,size_t count,loff_t *offp)
 {
     if (copy_from_user(msg,buf,count))
 		return -EFAULT;
@@ -41,23 +40,24 @@ static const struct proc_ops proc_fops = {
     .proc_write = write_proc,
 };
 
-void create_new_proc_entry(void)  //use of void for no arguments is compulsory now
+static void create_new_proc_entry(void)  //use of void for no arguments is compulsory now
 {
     proc_create("hello",0,NULL,&proc_fops);
     msg=kmalloc(N*sizeof(char), GFP_KERNEL);
 }
 
 
-int proc_init (void) {
+static int proc_init (void) {
     create_new_proc_entry();
     return 0;
 }
 
-void proc_cleanup(void) {
+static void proc_cleanup(void) {
     remove_proc_entry("hello",NULL);
     kfree(msg);
 }
 
 MODULE_LICENSE("GPL");
+MODULE_AUTHOR("Sacra");
 module_init(proc_init);
 module_exit(proc_cleanup);
