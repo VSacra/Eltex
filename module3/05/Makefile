@@ -1,4 +1,3 @@
-# Makefile для задания 5: Обработка сигналов
 CC = gcc
 CFLAGS = -Wall -Wextra -std=c99
 TARGET = main05
