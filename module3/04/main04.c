@@ -16,7 +16,7 @@ void parse_redirects(char* token, char** infile, char** outfile, int* append) {
 
     char* in = strstr(token, "<"); //Прочитать
     char* out = strstr(token, ">"); //Переписать
-    char* append = strstr(token, ">>"); //Добавить
+    char* append_out = strstr(token, ">>"); //Добавить
 
     // Обработка перенаправления ввода
     if (in) {
@@ -27,9 +27,9 @@ void parse_redirects(char* token, char** infile, char** outfile, int* append) {
     }
 
     // Обработка перенаправления вывода (>> для дописывания)
-    if (append) {
-        *append = '\0';
-        *outfile = append + 2;
+    if (append_out) {
+        *append_out = '\0';
+        *outfile = append_out + 2;
         *append = 1;
         while (**outfile == ' ') (*outfile)++;
     }
