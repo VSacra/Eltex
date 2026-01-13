@@ -3,15 +3,16 @@
 #include <unistd.h>
 #include <signal.h>
 #include <string.h>
+#include <errno.h>
 
-// Используем стандартные типы для сигналов
-// sig_atomic_t гарантирует атомарный доступ
-volatile sig_atomic_t sigint_counter = 0;  // Счетчик SIGINT
-volatile sig_atomic_t should_exit = 0;     // Флаг выхода
-volatile sig_atomic_t got_signal = 0;      // Флаг получения сигнала
-volatile sig_atomic_t last_signal = 0;     // Какой сигнал последний
+// РСЃРїРѕР»СЊР·СѓРµРј СЃС‚Р°РЅРґР°СЂС‚РЅС‹Рµ С‚РёРїС‹ РґР»СЏ СЃРёРіРЅР°Р»РѕРІ
+// sig_atomic_t РіР°СЂР°РЅС‚РёСЂСѓРµС‚ Р°С‚РѕРјР°СЂРЅС‹Р№ РґРѕСЃС‚СѓРї
+volatile sig_atomic_t sigint_counter = 0;  // РЎС‡РµС‚С‡РёРє SIGINT
+volatile sig_atomic_t should_exit = 0;     // Р¤Р»Р°Рі РІС‹С…РѕРґР°
+volatile sig_atomic_t got_signal = 0;      // Р¤Р»Р°Рі РїРѕР»СѓС‡РµРЅРёСЏ СЃРёРіРЅР°Р»Р°
+volatile sig_atomic_t last_signal = 0;     // РљР°РєРѕР№ СЃРёРіРЅР°Р» РїРѕСЃР»РµРґРЅРёР№
 
-// Функция-обработчик сигналов
+// Р¤СѓРЅРєС†РёСЏ-РѕР±СЂР°Р±РѕС‚С‡РёРє СЃРёРіРЅР°Р»РѕРІ
 void handle_signal(int sig_num) {
     got_signal = 1;
     last_signal = sig_num;
@@ -19,10 +20,10 @@ void handle_signal(int sig_num) {
     if (sig_num == SIGINT) {
         sigint_counter++;
         if (sigint_counter >= 3) {
-            should_exit = 1;  // После 3-го SIGINT - выходим
+            should_exit = 1;  // РџРѕСЃР»Рµ 3-РіРѕ SIGINT - РІС‹С…РѕРґРёРј
         }
     }
-    // Для SIGQUIT ничего не меняем, только отметим
+    // Р”Р»СЏ SIGQUIT РЅРёС‡РµРіРѕ РЅРµ РјРµРЅСЏРµРј, С‚РѕР»СЊРєРѕ РѕС‚РјРµС‚РёРј
 }
 
 int main() {
@@ -30,55 +31,55 @@ int main() {
     int counter = 1;
     char filename[] = "output.txt";
 
-    file = fopen(filename, "a");  // "a" - append (дописывать в конец)
+    file = fopen(filename, "a");  // "a" - append (РґРѕРїРёСЃС‹РІР°С‚СЊ РІ РєРѕРЅРµС†)
     if (file == NULL) {
-        fprintf(stderr, "Ошибка открытия файла %s: %s\n",
+        fprintf(stderr, "РћС€РёР±РєР° РѕС‚РєСЂС‹С‚РёСЏ С„Р°Р№Р»Р° %s: %s\n",
             filename, strerror(errno));
         return 1;
     }
 
-    // Создаем и очищаем структуру для обработки сигналов
+    // РЎРѕР·РґР°РµРј Рё РѕС‡РёС‰Р°РµРј СЃС‚СЂСѓРєС‚СѓСЂСѓ РґР»СЏ РѕР±СЂР°Р±РѕС‚РєРё СЃРёРіРЅР°Р»РѕРІ
     struct sigaction sig_settings;
-    memset(&sig_settings, 0, sizeof(sig_settings));  // Обнуляем структуру
+    memset(&sig_settings, 0, sizeof(sig_settings));  // РћР±РЅСѓР»СЏРµРј СЃС‚СЂСѓРєС‚СѓСЂСѓ
 
-    // Указываем нашу функцию-обработчик
+    // РЈРєР°Р·С‹РІР°РµРј РЅР°С€Сѓ С„СѓРЅРєС†РёСЋ-РѕР±СЂР°Р±РѕС‚С‡РёРє
     sig_settings.sa_handler = handle_signal;
 
-    // Очищаем маску сигналов (какие сигналы блокировать при обработке)
+    // РћС‡РёС‰Р°РµРј РјР°СЃРєСѓ СЃРёРіРЅР°Р»РѕРІ (РєР°РєРёРµ СЃРёРіРЅР°Р»С‹ Р±Р»РѕРєРёСЂРѕРІР°С‚СЊ РїСЂРё РѕР±СЂР°Р±РѕС‚РєРµ)
     sigemptyset(&sig_settings.sa_mask);
 
-    // Без специальных флагов
+    // Р‘РµР· СЃРїРµС†РёР°Р»СЊРЅС‹С… С„Р»Р°РіРѕРІ
     sig_settings.sa_flags = 0;
 
-    // Устанавливаем обработчик для SIGINT
+    // РЈСЃС‚Р°РЅР°РІР»РёРІР°РµРј РѕР±СЂР°Р±РѕС‚С‡РёРє РґР»СЏ SIGINT
     if (sigaction(SIGINT, &sig_settings, NULL) == -1) {
-        fprintf(stderr, "Ошибка установки обработчика SIGINT\n");
+        fprintf(stderr, "РћС€РёР±РєР° СѓСЃС‚Р°РЅРѕРІРєРё РѕР±СЂР°Р±РѕС‚С‡РёРєР° SIGINT\n");
         fclose(file);
         return 1;
     }
 
-    // Устанавливаем обработчик для SIGQUIT
+    // РЈСЃС‚Р°РЅР°РІР»РёРІР°РµРј РѕР±СЂР°Р±РѕС‚С‡РёРє РґР»СЏ SIGQUIT
     if (sigaction(SIGQUIT, &sig_settings, NULL) == -1) {
-        fprintf(stderr, "Ошибка установки обработчика SIGQUIT\n");
+        fprintf(stderr, "РћС€РёР±РєР° СѓСЃС‚Р°РЅРѕРІРєРё РѕР±СЂР°Р±РѕС‚С‡РёРєР° SIGQUIT\n");
         fclose(file);
         return 1;
     }
 
-    printf("Программа запущена. PID: %d\n", getpid());
-    printf("Нажмите Ctrl+C (SIGINT) 3 раза для выхода\n");
-    printf("Или Ctrl+\\ (SIGQUIT) для записи сообщения\n");
-    printf("Данные записываются в: %s\n\n", filename);
+    printf("РџСЂРѕРіСЂР°РјРјР° Р·Р°РїСѓС‰РµРЅР°. PID: %d\n", getpid());
+    printf("РќР°Р¶РјРёС‚Рµ Ctrl+C (SIGINT) 3 СЂР°Р·Р° РґР»СЏ РІС‹С…РѕРґР°\n");
+    printf("РР»Рё Ctrl+\\ (SIGQUIT) РґР»СЏ Р·Р°РїРёСЃРё СЃРѕРѕР±С‰РµРЅРёСЏ\n");
+    printf("Р”Р°РЅРЅС‹Рµ Р·Р°РїРёСЃС‹РІР°СЋС‚СЃСЏ РІ: %s\n\n", filename);
 
     while (1) {
-        // Проверяем, не пора ли выйти
+        // РџСЂРѕРІРµСЂСЏРµРј, РЅРµ РїРѕСЂР° Р»Рё РІС‹Р№С‚Рё
         if (should_exit) {
-            printf("\nПолучено 3 сигнала SIGINT. Завершение...\n");
+            printf("\nРџРѕР»СѓС‡РµРЅРѕ 3 СЃРёРіРЅР°Р»Р° SIGINT. Р—Р°РІРµСЂС€РµРЅРёРµ...\n");
             break;
         }
 
-        // Если был сигнал, обрабатываем его
+        // Р•СЃР»Рё Р±С‹Р» СЃРёРіРЅР°Р», РѕР±СЂР°Р±Р°С‚С‹РІР°РµРј РµРіРѕ
         if (got_signal) {
-            // Определяем название сигнала
+            // РћРїСЂРµРґРµР»СЏРµРј РЅР°Р·РІР°РЅРёРµ СЃРёРіРЅР°Р»Р°
             const char* signal_name;
             if (last_signal == SIGINT) {
                 signal_name = "SIGINT";
@@ -87,32 +88,32 @@ int main() {
                 signal_name = "SIGQUIT";
             }
 
-            // Записываем в файл
-            fprintf(file, "Обработан сигнал: %s (SIGINT всего: %d)\n",
+            // Р—Р°РїРёСЃС‹РІР°РµРј РІ С„Р°Р№Р»
+            fprintf(file, "РћР±СЂР°Р±РѕС‚Р°РЅ СЃРёРіРЅР°Р»: %s (SIGINT РІСЃРµРіРѕ: %d)\n",
                 signal_name, (int)sigint_counter);
 
-            // Сбрасываем флаг
+            // РЎР±СЂР°СЃС‹РІР°РµРј С„Р»Р°Рі
             got_signal = 0;
         }
 
-        // Записываем текущее значение счетчика
-        fprintf(file, "Счетчик: %d\n", counter);
+        // Р—Р°РїРёСЃС‹РІР°РµРј С‚РµРєСѓС‰РµРµ Р·РЅР°С‡РµРЅРёРµ СЃС‡РµС‚С‡РёРєР°
+        fprintf(file, "РЎС‡РµС‚С‡РёРє: %d\n", counter);
 
-        // Выводим на экран для информации
-        printf("Записано: %d\n", counter);
+        // Р’С‹РІРѕРґРёРј РЅР° СЌРєСЂР°РЅ РґР»СЏ РёРЅС„РѕСЂРјР°С†РёРё
+        printf("Р—Р°РїРёСЃР°РЅРѕ: %d\n", counter);
 
-        counter++;  // Увеличиваем счетчик
+        counter++;  // РЈРІРµР»РёС‡РёРІР°РµРј СЃС‡РµС‚С‡РёРє
 
-        // Ждем 1 секунду
+        // Р–РґРµРј 1 СЃРµРєСѓРЅРґСѓ
         sleep(1);
     }
 
-    // Закрываем файл
+    // Р—Р°РєСЂС‹РІР°РµРј С„Р°Р№Р»
     if (fclose(file) == EOF) {
-        fprintf(stderr, "Ошибка закрытия файла\n");
+        fprintf(stderr, "РћС€РёР±РєР° Р·Р°РєСЂС‹С‚РёСЏ С„Р°Р№Р»Р°\n");
         return 1;
     }
 
-    printf("Файл закрыт. Программа завершена.\n");
+    printf("Р¤Р°Р№Р» Р·Р°РєСЂС‹С‚. РџСЂРѕРіСЂР°РјРјР° Р·Р°РІРµСЂС€РµРЅР°.\n");
     return 0;
 }
