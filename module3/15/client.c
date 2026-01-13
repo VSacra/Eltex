@@ -90,12 +90,6 @@ int main(int argc, char *argv[])
     
     printf("Подключено к %s:%d\n", argv[1], portno);
     
-    // Получаем приветствие от сервера
-    n = recv(my_sock, buffer, sizeof(buffer) - 1, 0);
-    if (n > 0) {
-        buffer[n] = 0;
-        printf("%s", buffer);
-    }
     
     // Основной цикл
     while (1)
