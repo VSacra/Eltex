@@ -128,7 +128,7 @@ int main() {
         }
         
         processed_by_me++;
-        usleep(200000 + rand() % 300000);
+        sleep(2 + rand() % 3);
     }
     
     printf("[Потребитель %d] Завершил работу. Обработано: %d строк\n", 

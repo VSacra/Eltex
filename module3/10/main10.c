@@ -10,6 +10,7 @@
 #include <time.h>
 #include <errno.h>
 
+
 // Ключ для разделяемой памяти
 #define SHM_KEY 12345
 
@@ -148,7 +149,7 @@ int main() {
         }
     }
     
-    // 7. ЗАВЕРШЕНИЕ РАБОТЫ
+  
     printf("\nЗавершение программы\n");
     printf("Всего обработано наборов данных: %d\n", processed_count);
     

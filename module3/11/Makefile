@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -Wall -Wextra -std=c99 -lrt
+CFLAGS = -Wall -Wextra -std=c99 -D_POSIX_C_SOURCE=199309L -lrt
 TARGET = main11
 SRC = main11.c
 

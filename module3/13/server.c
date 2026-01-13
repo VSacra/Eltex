@@ -49,6 +49,9 @@ int parse_expression(const char *str, double *num1, double *num2, char *op)
     
     // Получаем оператор
     *op = *endptr;
+    if (*op != '+' && *op != '-' && *op != '*' && *op != '/') {
+        return 0; // Неверный оператор
+    }
     endptr++;
     
     // Пропускаем пробелы
@@ -106,13 +109,11 @@ void printusers()
 
 int main(int argc, char *argv[])
 {
-    char buffer[1024];
     int sockfd, newsockfd;
     int portno;
     int pid;
     socklen_t clilen;
     struct sockaddr_in serv_addr, cli_addr;
-    struct addrinfo hints, *res;
     char hostname[NI_MAXHOST];
     char service[NI_MAXSERV];
 
@@ -186,6 +187,7 @@ void dostuff(int sock)
                      "Введите команду: ";
     
     send(sock, help_msg, strlen(help_msg), 0);
+    send(sock, "Введите команду: ", 17, 0);
     
     while (1)
     {
@@ -198,6 +200,9 @@ void dostuff(int sock)
             break;
         }
         
+	double num1, num2;
+        char op;
+
         buffer[strcspn(buffer, "\n")] = 0;
         
         // Команда выхода
@@ -218,9 +223,10 @@ void dostuff(int sock)
         else if (strncmp(buffer, "file ", 5) == 0)
         {
             char filename[256];
-            if (sscanf(buffer + 5, "%s", filename) == 1)
+            char msg[512];  // Увеличено для безопасного форматирования
+            
+            if (sscanf(buffer + 5, "%255s", filename) == 1)
             {
-                char msg[256];
                 snprintf(msg, sizeof(msg), "Готов принять файл: %s\n", filename);
                 send(sock, msg, strlen(msg), 0);
                 
@@ -234,44 +240,31 @@ void dostuff(int sock)
         }
         
         // Математическое выражение (проверяем, содержит ли один из операторов)
-        else if (strchr(buffer, '+') || strchr(buffer, '-') || 
-                 strchr(buffer, '*') || strchr(buffer, '/'))
-        {
-            double num1, num2;
-            char op;
-            
-            if (parse_expression(buffer, &num1, &num2, &op))
-            {
-                double result = calculate(num1, num2, op);
-                
-                if (isnan(result))
-                {
-                    char *msg = "Ошибка: неизвестная операция\n";
-                    send(sock, msg, strlen(msg), 0);
-                }
-                else if (isinf(result))
-                {
-                    char *msg = "Ошибка: деление на ноль\n";
-                    send(sock, msg, strlen(msg), 0);
-                }
-                else
-                {
-                    char response[256];
-                    snprintf(response, sizeof(response), "Ответ: %.2f\n", result);
-                    send(sock, response, strlen(response), 0);
-                }
-            }
-            else
-            {
-                char *msg = "Ошибка: неверный формат выражения\n";
-                send(sock, msg, strlen(msg), 0);
-            }
-        }
-        
+        else if (sscanf(buffer, "%lf %c %lf", &num1, &op, &num2) == 3)
+		{
+    		double result = calculate(num1, num2, op);
+    
+    		if (isnan(result))
+    			{
+        		char *msg = "Ошибка: неизвестная операция\n";
+        		send(sock, msg, strlen(msg), 0);
+    			}
+    		else if (isinf(result))
+    			{
+        		char *msg = "Ошибка: деление на ноль\n";
+        		send(sock, msg, strlen(msg), 0);
+    			}
+    		else
+    			{
+        		char response[256];
+        		snprintf(response, sizeof(response), "Ответ: %.2f\n", result);
+        		send(sock, response, strlen(response), 0);
+    			}
+		}
         // Любой другой текст
         else
         {
-            char response[256];
+            char response[2048];  
             snprintf(response, sizeof(response), "Вы сказали: %s\n", buffer);
             send(sock, response, strlen(response), 0);
         }
