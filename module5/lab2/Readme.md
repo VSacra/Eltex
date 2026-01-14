@@ -1,4 +1,4 @@
-<img width="1280" height="800" alt="3" src="https://github.com/user-attachments/assets/58ea3216-ed1c-4c14-abc5-6346006209dd" />Сначала требуется скомпилировать файл, используя make all
+Сначала требуется скомпилировать файл, используя make all
 <img width="1280" height="800" alt="1" src="https://github.com/user-attachments/assets/fdc4099d-475a-414f-a92d-9a72ed047a3b" />
 
 Затем необходимо вмонтировать образ ядра 
